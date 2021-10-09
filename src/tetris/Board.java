@@ -9,10 +9,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JPanel;
 
-/**
- *
- * @author John
- */
+// esto es un nuevo cambio
 public class Board {
     //Atributos
     private static final int ROWS = 25;
