@@ -18,5 +18,4 @@ public class Tetris {
         MainForm mainWindow = new MainForm();
         mainWindow.setVisible(true);
     }
-    
 }
