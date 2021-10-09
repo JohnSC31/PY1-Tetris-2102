@@ -57,8 +57,8 @@
                   <Component id="pnlBoard" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jPanel2" max="32767" attributes="0"/>
-                      <Component id="jPanel3" max="32767" attributes="0"/>
+                      <Component id="pnlNext1" max="32767" attributes="0"/>
+                      <Component id="pnlNext2" max="32767" attributes="0"/>
                       <Component id="lblNext" alignment="1" pref="201" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -89,9 +89,9 @@
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="lblNext" min="-2" pref="34" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="pnlNext1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pnlNext2" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="162" max="32767" attributes="0"/>
@@ -174,7 +174,7 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Container class="javax.swing.JPanel" name="jPanel2">
+        <Container class="javax.swing.JPanel" name="pnlNext1">
 
           <Layout>
             <DimensionLayout dim="0">
@@ -189,7 +189,7 @@
             </DimensionLayout>
           </Layout>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel3">
+        <Container class="javax.swing.JPanel" name="pnlNext2">
 
           <Layout>
             <DimensionLayout dim="0">
