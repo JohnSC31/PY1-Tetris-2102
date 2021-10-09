@@ -10,9 +10,13 @@ package tetris;
  * @author John
  */
 public class GameForm extends javax.swing.JFrame {
-
+    
+    private Board gameBoard = new Board();
+    
+    
     public GameForm() {
         initComponents();
+        this.gameBoard.printBoard(pnlBoard);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
