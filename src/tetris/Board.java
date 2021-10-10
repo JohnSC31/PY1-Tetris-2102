@@ -34,6 +34,7 @@ public class Board extends JPanel{
         new Color(223,30,141)}; // 7 Pieza en I
     
     private int[][] board = initBoard();
+    // comentario nuevo
     
     
     
