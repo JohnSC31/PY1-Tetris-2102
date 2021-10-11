@@ -13,13 +13,15 @@ import java.awt.Dimension;
  */
 public class GameForm extends javax.swing.JFrame {
     
-    private Board gameBoard = new Board();
+    private final Board gameBoard;
     
     
     public GameForm() {
         initComponents();
         this.setSize(new Dimension(670, 640));
-        this.gameBoard.printBoard(pnlBoard);
+        
+        this.gameBoard = new Board(pnlBoard);
+        this.gameBoard.printBoard();
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
