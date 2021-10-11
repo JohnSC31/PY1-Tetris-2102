@@ -20,7 +20,7 @@ public class FiguraT extends Figuras{
         
     }
     
-    @Override
+    
     public int[][] agregarFigura(int[][] matriz){
         
         matriz[fila][columna] = 3;

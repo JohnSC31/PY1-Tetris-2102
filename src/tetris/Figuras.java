@@ -19,7 +19,11 @@ public abstract class Figuras {
         this.columna = columna;
     }
     
-    public abstract int[][] agregarFigura(int[][] matriz);
+//    public abstract int[][] agregarFigura(int[][] matriz);
+    
+//    public static abstract int[][] agregarFigura(int centerI, int centerJ, int[][] board);
+    
+    
     
     public abstract int[][] moverAbajo(int[][] matriz);
     

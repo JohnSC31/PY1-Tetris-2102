@@ -14,33 +14,32 @@ import java.awt.Dimension;
 public class GameForm extends javax.swing.JFrame {
     
     private final Board gameBoard;
-    Figuras num1= new FiguraO(5);
+//    Figuras num1= new FiguraO(5);
     
     public GameForm() {
         initComponents();
         this.setSize(new Dimension(670, 640));
         this.gameBoard = new Board(pnlBoard);
-        this.gameBoard.printBoard();
-        this.gameBoard.setBoard(num1.agregarFigura(gameBoard.getBoard())); 
     }
     
-    public void print(){
-        int [][] matriz = gameBoard.getBoard();
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++) {
-                System.out.print(matriz[i][j] + " ");
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-    }
+//    public void print(){
+//        int [][] matriz = gameBoard.getBoard();
+//        for (int i = 0; i < 20; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                System.out.print(matriz[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
+//        System.out.println("");
+//    }
     
-    public void muevefigura(){
-        gameBoard.setBoard(num1.moverAbajo(gameBoard.getBoard()));
-        gameBoard.printBoard();
-        print();
-        
-    }
+//    public void muevefigura(){
+//        gameBoard.setBoard(num1.moverAbajo(gameBoard.getBoard()));
+//        gameBoard.printBoard();
+//        print();
+//        
+//    }
+    
     
     
     @SuppressWarnings("unchecked")
@@ -213,7 +212,8 @@ public class GameForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBajarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajarActionPerformed
-        muevefigura();
+        this.gameBoard.generateFigure(3, 0);
+        System.out.println("Se imprime matriz");
     }//GEN-LAST:event_btnBajarActionPerformed
 
 
