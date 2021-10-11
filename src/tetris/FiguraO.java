@@ -19,20 +19,45 @@ public class FiguraO extends Figuras {
         
         
     }
-    @Override
-    public int[][] agregarFigura(int[][] matriz){
-        
-        for (int i = 0; i < 2; i++) {
-            for (int j = columna; j < columna + 2; j++) {
-                matriz[i][j] = 1;
-            }   
-        }
-        
-        return matriz;
-    }
     
+    // A ESTA CLASE DE FIGURA NO DEBERIA DE HACERLE UN NEW POR LO TANTO EL CONSTRUCTOR NO ES
+    // NECESARIO LA IDEA ES HACER SOLAMENTE UN METODO ESTATICO PARA GENERAR O BORRAR LA FIGURA X
+    // CON CENTRO I,J EN LA ROTACION n
+    
+  
+//    @Override
+//    public int[][] agregarFigura(int[][] matriz){
+//        
+//        for (int i = 0; i < 2; i++) {
+//            for (int j = columna; j < columna + 2; j++) {
+//                matriz[i][j] = 1;
+//            }   
+//        }
+//        
+//        return matriz;
+//    }
+    
+    // PRUEBAS JOHN PARA AGREGAR FIGURA
+    // se coloca el metodo estatico para no tener que hacer instancia de la clase para
+    // poder uilizarlo
+    public static int[][] agregarFigura(int centerI, int centerJ, int rotation,  int[][] board){
+       // una vez definido que el centro de la figura es la esquina inferior izquieda
+       // por ser la figura en forma de O
+       
+       // hacer in if para cada rotacion de la figura en forma de O
+       // en cada if hacer la validacion de si se puede crear la figura en ese centro y 
+       // con esa rotacion especificada
+       
+       
+       board[centerI][centerJ] = 3; // porque se agrega la figura numero 3
+       board[centerI  - 1][centerJ] = 3; // esquina superior izquierda
+       board[centerI - 1][centerJ + 1] = 3; // esquina superior derecha
+       board[centerI][centerJ + 1] = 3; // esquina inferior derecha
+        
+        return board;
+    }
     @Override
-    public int[][] moverAbajo(int[][] matriz){
+    public  int[][] moverAbajo(int[][] matriz){
         //Agregar restricciones
         
         matriz[fila][columna] = 0;

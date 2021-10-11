@@ -23,7 +23,7 @@ public class FiguraI extends Figuras{
     }
     
     
-    @Override
+    
     public int[][] agregarFigura(int[][] matriz){
         for (int i = fila; i < 4; i++) {
                 matriz[i][columna] = 2;
