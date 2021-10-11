@@ -36,6 +36,14 @@ public class Board extends JPanel{
     private int[][] board = initBoard();
     
     private final JPanel panelBoard; // el panel donde se imprime la matriz
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
+    }
     
     
     
