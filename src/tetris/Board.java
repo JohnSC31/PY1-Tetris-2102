@@ -34,13 +34,15 @@ public class Board extends JPanel{
         new Color(223,30,141)}; // 7 Pieza en I
     
     private int[][] board = initBoard();
-    // comentario nuevo
+    
+    private final JPanel panelBoard; // el panel donde se imprime la matriz
     
     
     
     // Constructor
-    public Board(){
-        
+    public Board(JPanel pnlBoard){
+        this.panelBoard = pnlBoard;
+        this.board = initBoard(); // se inicializa la matriz
     }
     
     //METODOS
@@ -55,7 +57,7 @@ public class Board extends JPanel{
         return board;
     }
     
-    public void printBoard(JPanel panelBoard){
+    public void printBoard(){
         int x = 0;
         int y = 0 -((ROWS - 20) * HEIGHT); // oculta las filas de arriba para que solo se muestren 20
         
