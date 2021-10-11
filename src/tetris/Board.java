@@ -13,6 +13,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 // esto es un nuevo cambio
 public class Board extends JPanel{
@@ -33,42 +34,50 @@ public class Board extends JPanel{
         new Color(202,30,223), // 6 Pieza en T
         new Color(223,30,141)}; // 7 Pieza en I
     
-    private int[][] board = initBoard();
+    private int[][] board;
+    
+    // los centros de la figura actualmente manipulada
+    private int centerI;
+    private int centerJ;
+    private int currentFigure;
     
     private final JPanel panelBoard; // el panel donde se imprime la matriz
-    
-    
     
     // Constructor
     public Board(JPanel pnlBoard){
         this.panelBoard = pnlBoard;
-        this.board = initBoard(); // se inicializa la matriz
+        
+        this.centerI = 4;
+        this.centerJ = 5;
+        initBoard(); // se inicializa la matriz
+        printBoard();
     }
     
     //METODOS
-    private int[][] initBoard(){
-        int [][] board = new int[ROWS][COLS];
+    private void initBoard(){
+        this.board = new int[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                board[i][j] = 0;
+                this.board[i][j] = 0;
             }
         }
-        
-        return board;
+       this.board[centerI][centerJ] = 3;
     }
     
     public void printBoard(){
         int x = 0;
         int y = 0 -((ROWS - 20) * HEIGHT); // oculta las filas de arriba para que solo se muestren 20
-        
+        panelBoard.removeAll(); // elimina todos los elementos del panel
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                panelBoard.add(createPanel(x, y, this.board[i][j]));
+                this.panelBoard.add(createPanel(x, y, this.board[i][j]));
                 x += WIDTH;
             }
             x = 0;
             y += HEIGHT;
         }
+        
+        panelBoard.repaint(); // vuelve a pintar el panel
     }
     
     private JPanel createPanel(int x , int y, int value){
@@ -81,5 +90,32 @@ public class Board extends JPanel{
     
     }
     
+    // PRUEBAS DE JOHN PARA LA IMPRESION DE LA FIGURA
+    public void generateFigure(int figure, int rotation){
+        if(figure == 3){ // se pinta la figura 3 la O
+            this.board = FiguraO.agregarFigura(centerI, centerJ, rotation, this.board);
+        }
+                
+        printBoard();
+    }
+    
+    // imprime la matriz en consola
+    private void printConsoleBoard(){
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println("");
+        }
+    }
+    
     // GETTERS AND SETTERS
+     public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
+    }
+    
 }

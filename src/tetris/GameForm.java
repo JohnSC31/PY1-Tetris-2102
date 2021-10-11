@@ -14,15 +14,34 @@ import java.awt.Dimension;
 public class GameForm extends javax.swing.JFrame {
     
     private final Board gameBoard;
-    
+//    Figuras num1= new FiguraO(5);
     
     public GameForm() {
         initComponents();
         this.setSize(new Dimension(670, 640));
-        
         this.gameBoard = new Board(pnlBoard);
-        this.gameBoard.printBoard();
     }
+    
+//    public void print(){
+//        int [][] matriz = gameBoard.getBoard();
+//        for (int i = 0; i < 20; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                System.out.print(matriz[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
+//        System.out.println("");
+//    }
+    
+//    public void muevefigura(){
+//        gameBoard.setBoard(num1.moverAbajo(gameBoard.getBoard()));
+//        gameBoard.printBoard();
+//        print();
+//        
+//    }
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -36,6 +55,7 @@ public class GameForm extends javax.swing.JFrame {
         pnlNext1 = new javax.swing.JPanel();
         pnlNext2 = new javax.swing.JPanel();
         lblTimer = new javax.swing.JLabel();
+        btnBajar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(672, 600));
@@ -111,16 +131,28 @@ public class GameForm extends javax.swing.JFrame {
         lblTimer.setText("00:00");
         lblTimer.setToolTipText("");
 
+        btnBajar.setText("Bajar");
+        btnBajar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBajarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblLines1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblLines, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblScore, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblLines1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblLines, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblScore, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(btnBajar)))
                 .addGap(18, 18, 18)
                 .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
@@ -146,7 +178,9 @@ public class GameForm extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(lblLines1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
-                        .addComponent(lblLines, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblLines, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(btnBajar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(lblNext, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,8 +211,14 @@ public class GameForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBajarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajarActionPerformed
+        this.gameBoard.generateFigure(3, 0);
+        System.out.println("Se imprime matriz");
+    }//GEN-LAST:event_btnBajarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBajar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLines;
     private javax.swing.JLabel lblLines1;
