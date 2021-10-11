@@ -41,13 +41,14 @@ public class FiguraO extends Figuras {
     // se coloca el metodo estatico para no tener que hacer instancia de la clase para
     // poder uilizarlo
     public static int[][] agregarFigura(int centerI, int centerJ, int rotation,  int[][] board){
-       // una vez definido que el centro de la figura es la esquina inferior izquieda
-       // por ser la figura en forma de O
-       
-       // hacer in if para cada rotacion de la figura en forma de O
-       // en cada if hacer la validacion de si se puede crear la figura en ese centro y 
-       // con esa rotacion especificada
-       
+        // una vez definido que el centro de la figura es la esquina inferior izquieda
+        // por ser la figura en forma de O
+        // hacer in if para cada rotacion de la figura en forma de O
+        // en cada if hacer la validacion de si se puede crear la figura en ese centro y
+        // con esa rotacion especificada       
+       if(rotation == 0 ){
+           
+       }
        
        board[centerI][centerJ] = 3; // porque se agrega la figura numero 3
        board[centerI  - 1][centerJ] = 3; // esquina superior izquierda
@@ -98,6 +99,8 @@ public class FiguraO extends Figuras {
     public int[][] girar(int[][] matriz){
         return matriz;
     }
+    
+    
     
     
     

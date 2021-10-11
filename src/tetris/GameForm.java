@@ -13,13 +13,13 @@ import java.awt.Dimension;
  */
 public class GameForm extends javax.swing.JFrame {
     
-    private final Board gameBoard;
+    private ThreadGame game;
 //    Figuras num1= new FiguraO(5);
     
     public GameForm() {
         initComponents();
         this.setSize(new Dimension(670, 640));
-        this.gameBoard = new Board(pnlBoard);
+        this.game = new ThreadGame(pnlBoard);
     }
     
 //    public void print(){
@@ -212,7 +212,7 @@ public class GameForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBajarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajarActionPerformed
-        this.gameBoard.generateFigure(3, 0);
+//        this.gameBoard.generateFigure(3, 0);
         System.out.println("Se imprime matriz");
     }//GEN-LAST:event_btnBajarActionPerformed
 
