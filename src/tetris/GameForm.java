@@ -20,28 +20,9 @@ public class GameForm extends javax.swing.JFrame {
         initComponents();
         this.setSize(new Dimension(670, 640));
         this.gameBoard = new Board(pnlBoard);
+        this.gameBoard.generateFigure(5, 0);
     }
-    
-//    public void print(){
-//        int [][] matriz = gameBoard.getBoard();
-//        for (int i = 0; i < 20; i++) {
-//            for (int j = 0; j < 10; j++) {
-//                System.out.print(matriz[i][j] + " ");
-//            }
-//            System.out.println("");
-//        }
-//        System.out.println("");
-//    }
-    
-//    public void muevefigura(){
-//        gameBoard.setBoard(num1.moverAbajo(gameBoard.getBoard()));
-//        gameBoard.printBoard();
-//        print();
-//        
-//    }
-    
-    
-    
+ 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -56,6 +37,9 @@ public class GameForm extends javax.swing.JFrame {
         pnlNext2 = new javax.swing.JPanel();
         lblTimer = new javax.swing.JLabel();
         btnBajar = new javax.swing.JButton();
+        btnDerecha = new javax.swing.JButton();
+        btnIzquierda = new javax.swing.JButton();
+        btnGirar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(672, 600));
@@ -138,6 +122,27 @@ public class GameForm extends javax.swing.JFrame {
             }
         });
 
+        btnDerecha.setText("Derecha");
+        btnDerecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDerechaActionPerformed(evt);
+            }
+        });
+
+        btnIzquierda.setText("Izquierda");
+        btnIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIzquierdaActionPerformed(evt);
+            }
+        });
+
+        btnGirar.setText("Girar");
+        btnGirar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGirarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,7 +157,15 @@ public class GameForm extends javax.swing.JFrame {
                             .addComponent(lblScore, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(btnBajar)))
+                        .addComponent(btnBajar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnIzquierda)
+                            .addComponent(btnDerecha)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(btnGirar)))
                 .addGap(18, 18, 18)
                 .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
@@ -180,7 +193,9 @@ public class GameForm extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(lblLines, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51)
-                        .addComponent(btnBajar))
+                        .addComponent(btnBajar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDerecha))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(lblNext, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,7 +203,11 @@ public class GameForm extends javax.swing.JFrame {
                         .addComponent(pnlNext1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(pnlNext2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnIzquierda)
+                .addGap(18, 18, 18)
+                .addComponent(btnGirar)
+                .addContainerGap(139, Short.MAX_VALUE))
             .addComponent(pnlBoard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -212,13 +231,28 @@ public class GameForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBajarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajarActionPerformed
-        this.gameBoard.generateFigure(3, 0);
-        System.out.println("Se imprime matriz");
+        this.gameBoard.fallFigure(5);
     }//GEN-LAST:event_btnBajarActionPerformed
+
+    private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
+        this.gameBoard.moveRight(5);
+        
+    }//GEN-LAST:event_btnDerechaActionPerformed
+
+    private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
+        this.gameBoard.moveLeft(5);
+    }//GEN-LAST:event_btnIzquierdaActionPerformed
+
+    private void btnGirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGirarActionPerformed
+        this.gameBoard.rotateFigure(5);
+    }//GEN-LAST:event_btnGirarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBajar;
+    private javax.swing.JButton btnDerecha;
+    private javax.swing.JButton btnGirar;
+    private javax.swing.JButton btnIzquierda;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLines;
     private javax.swing.JLabel lblLines1;
