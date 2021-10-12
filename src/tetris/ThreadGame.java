@@ -36,8 +36,8 @@ public class ThreadGame extends Thread{
                 this.board.fallFigure();
                 
                 if(!board.validFallFigure()){
-                    board.generateNewFigure();
                     board.score();
+                    board.generateNewFigure();
                 }
                 
                 

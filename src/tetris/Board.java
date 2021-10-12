@@ -128,6 +128,7 @@ public class Board extends JPanel{
             }
             case 3 -> {
                 // figura O
+                // hace validfigura
                 FiguraO.agregarFigura(centerI, centerJ, rotation, board);
             }
             case 4 -> {
@@ -156,6 +157,7 @@ public class Board extends JPanel{
         rotation = 0;
         Random r = new Random();
         this.queueFigures.add(r.nextInt(7)+1);
+        // lama a generar figura
     }
     
     // Elimina de la matriz la figura actual
@@ -170,7 +172,7 @@ public class Board extends JPanel{
                 // figura L
             }
             case 3 -> {
-                 // figura O
+                // figura O
             }
             case 4 -> {
                  // figura S
@@ -220,7 +222,10 @@ public class Board extends JPanel{
             case 3 -> {
                 // figura O
                 // validar la figura
+                // resetamos la figura actual
                 //FiguraO.validFigure(centerI + 1, centerJ, rotation, board);
+                // si se puede se pinta con nuevo centro
+                // si no se queda igual
             }
             case 4 -> {
                 // figura S

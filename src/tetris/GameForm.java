@@ -20,6 +20,7 @@ public class GameForm extends javax.swing.JFrame {
         initComponents();
         this.setSize(new Dimension(670, 640));
         this.game = new ThreadGame(pnlBoard);
+        this.game.start();
     }
     
 //    public void print(){
