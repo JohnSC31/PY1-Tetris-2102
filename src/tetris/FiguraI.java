@@ -9,20 +9,47 @@ package tetris;
  *
  * @author josa
  */
-public class FiguraI extends Figuras{
+public class FiguraI {
     private int fila = 0;
     private int columna;
     private String estadoLinea;
 
     public FiguraI(int columna) {
-        super(0, columna);
+        
         this.columna = columna;
         
         
         
     }
     
-    
+    public static int[][] agregarFigura(int centerI, int centerJ, int rotation,  int[][] board){
+       // una vez definido que el centro de la figura es la esquina inferior izquieda
+       // por ser la figura en forma de O
+       
+       // hacer in if para cada rotacion de la figura en forma de O
+       // en cada if hacer la validacion de si se puede crear la figura en ese centro y 
+       // con esa rotacion especificada
+       
+       switch(rotation){
+           case 0: //norte
+                board[centerI][centerJ] = 7; // porque se agrega la figura numero 3
+                board[centerI  - 1][centerJ] = 7; // esquina superior izquierda
+                board[centerI + 1][centerJ] = 7; // esquina superior derecha
+                board[centerI + 2][centerJ] = 7;
+           case 1: //este
+                board[centerI][centerJ] = 7; 
+                board[centerI][centerJ + 1] = 7; 
+                board[centerI][centerJ - 1] = 7; 
+                board[centerI][centerJ - 2] = 7;
+       }
+       
+       board[centerI][centerJ] = 3; // porque se agrega la figura numero 3
+       board[centerI  - 1][centerJ] = 3; // esquina superior izquierda
+       board[centerI - 1][centerJ + 1] = 3; // esquina superior derecha
+       board[centerI][centerJ + 1] = 3; // esquina inferior derecha
+        
+       return board;
+    }
     
     public int[][] agregarFigura(int[][] matriz){
         for (int i = fila; i < 4; i++) {
@@ -37,7 +64,7 @@ public class FiguraI extends Figuras{
     }
     
     
-    @Override
+    
     public int[][] moverAbajo(int[][] matriz){
         //Agregar restricciones
         
@@ -61,7 +88,7 @@ public class FiguraI extends Figuras{
         return matriz;
     }
     
-    @Override
+    
     public int[][] moverDerecha(int[][] matriz){
         if(estadoLinea.equals("VERTICAL")){
             for (int i = fila; i < fila + 4; i++) {
@@ -77,7 +104,7 @@ public class FiguraI extends Figuras{
         return matriz;
     }
     
-    @Override
+    
     public int[][] moverIzquierda(int[][] matriz){
         if(estadoLinea.equals("VERTICAL")){
             for (int i = fila; i < fila + 4; i++) {
@@ -93,7 +120,7 @@ public class FiguraI extends Figuras{
         return matriz;
     }
     
-    @Override
+    
     public int[][] girar(int[][] matriz){
         if(estadoLinea.equals("VERTICAL")){
             for (int i = fila; i < fila + 4; i++) { //limpirar fila anterior
