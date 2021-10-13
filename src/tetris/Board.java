@@ -8,6 +8,8 @@ package tetris;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -26,57 +28,81 @@ public class Board extends JPanel{
     // Definicion de los colores por tipo de pieza
     private static final Color COLORS[] = {
         new Color(0,0,0), // 0 Celda en blanco sin ningun valor
-        new Color(236,110,87), // 1 Pieza en J
-        new Color(236,208,48), // 2 Pieza en L
-        new Color(143,206,32), // 3 Pieza en O
-        new Color(17,193,155), // 4 Pieza en S
-        new Color(14,119,192), // 5 Pieza en Z
-        new Color(202,30,223), // 6 Pieza en T
-        new Color(223,30,141)}; // 7 Pieza en I
+        new Color(236,110,87), // 1 Pieza en J (Rojo)
+        new Color(236,208,48), // 2 Pieza en L (Amarillo)
+        new Color(143,206,32), // 3 Pieza en O (Verde)
+        new Color(17,193,155), // 4 Pieza en S (Cyan)
+        new Color(14,119,192), // 5 Pieza en Z (Azul)
+        new Color(202,30,223), // 6 Pieza en T (Morado)
+        new Color(223,30,141)}; // 7 Pieza en I (Rosado)
     
     private int[][] board;
+    private JPanel[][] boardPanels;
+    private int[][] boardNextFigure1; // la figura siguiente
+    private int [][] boardNextFigure2; // la figura siguiente siguiente
+    private ArrayList queueFigures;
+    private int score = 0;
+    private int lines = 0;
     
-    // los centros de la figura actualmente manipulada
+    // los atributos de la figura actual
     private int centerI;
     private int centerJ;
     private int rotation;
     private int currentFigure;
+    
+    // incorporar en la clase figura que realice Josa los atributos de la figura
     
     private final JPanel panelBoard; // el panel donde se imprime la matriz
     
     // Constructor
     public Board(JPanel pnlBoard){
         this.panelBoard = pnlBoard;
-        
-        this.centerI = 4;
-        this.centerJ = 5;
         initBoard(); // se inicializa la matriz
-        printBoard();
+        initQueueFigures();
+        generateNewFigure();
+        printBoard(); // se imprime por primera vez la matriz
+        
     }
     
     //METODOS
     private void initBoard(){
+        int x = 0;
+        int y = 0 -((ROWS - 20) * HEIGHT); // oculta las filas de arriba para que solo se muestren 20
         this.board = new int[ROWS][COLS];
+        this.boardPanels = new JPanel[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 this.board[i][j] = 0;
-            }
-        }
-    }
-    
-    public void printBoard(){
-        int x = 0;
-        int y = 0 -((ROWS - 20) * HEIGHT); // oculta las filas de arriba para que solo se muestren 20
-        panelBoard.removeAll(); // elimina todos los elementos del panel
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                this.panelBoard.add(createPanel(x, y, this.board[i][j]));
+                this.boardPanels[i][j] = createPanel(x, y, this.board[i][j]);
+                this.panelBoard.add(this.boardPanels[i][j]);
                 x += WIDTH;
             }
             x = 0;
             y += HEIGHT;
         }
-        
+    }
+    
+    // genera las primeras figuras
+    private void initQueueFigures(){
+        this.queueFigures = new ArrayList();
+        Random r = new Random();
+        for(int i = 0; i < 3; i++){
+            this.queueFigures.add(r.nextInt(7)+1);
+        }
+         
+    }
+    
+    private void resetFigureCenter(){
+        this.centerI = 3;
+        this.centerJ = 4;
+    }
+    
+    public void printBoard(){
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                this.boardPanels[i][j].setBackground(COLORS[this.board[i][j]]);
+            }
+        }
         panelBoard.repaint(); // vuelve a pintar el panel
     }
     
@@ -85,20 +111,19 @@ public class Board extends JPanel{
         panel.setBackground(COLORS[value]);
         panel.setSize(WIDTH , HEIGHT);
         panel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
-        panel.setLocation(x, y);      
+        panel.setLocation(x, y);     
         return panel;
     
     }
     
     // PRUEBAS DE JOHN PARA LA IMPRESION DE LA FIGURA
-    public void generateFigure(int figure, int rotation){
-        
-        switch(figure){
-            case 1: // se pinta la figura 3 la O
+    public void generateFigure(){
+        switch(currentFigure){
+            case 1: // se pinta la figura 1 la J
                 this.board = Figuras.generateFigureJ(centerI, centerJ, rotation, this.board,1);
                 break;
             
-            case 2: // se pinta la figura 3 la O
+            case 2: // se pinta la figura 2 la L
                 this.board = Figuras.generateFigureL(centerI, centerJ, rotation, this.board,2);
                 break;    
                 
@@ -106,93 +131,114 @@ public class Board extends JPanel{
                 this.board = Figuras.generateFigureO(centerI, centerJ, rotation, this.board,3);
                 break;
             
-            case 4: // se pinta la figura 3 la O
+            case 4: // se pinta la figura 4 la S
                 this.board = Figuras.generateFigureS(centerI, centerJ, rotation, this.board,4);
                 break; 
             
-            case 5: // se pinta la figura 3 la O
+            case 5: // se pinta la figura 5 la Z
                 this.board = Figuras.generateFigureZ(centerI, centerJ, rotation, this.board,5);
                 break;
+            
+            case 6: // se pinta la figura 6 la T
+                this.board = Figuras.generateFigureT(centerI, centerJ, rotation, this.board,6);
+                break;
                 
-            case 7: // se pinta la figura 3 la O
+            case 7: // se pinta la figura 7 la I
                 this.board = Figuras.generateFigureI(centerI, centerJ, rotation, this.board,7);
                 break;
             
-            case 6: // se pinta la figura 3 la O
-                this.board = Figuras.generateFigureT(centerI, centerJ, rotation, this.board,6);
-                break;
-            
         }
-                
+        
         printBoard();
+        
     }
     
-    public void resetFigure(int figure){
-        switch(figure){
-            case 1: //Pieza en O
+    public void generateNewFigure(){
+        System.out.println("Se genera una figura");
+        this.currentFigure = (int)queueFigures.get(0);
+        queueFigures.remove(0);
+        resetFigureCenter();
+        this.rotation = 0;
+        Random r = new Random();
+        this.queueFigures.add(r.nextInt(7)+1);
+        generateFigure();
+    }
+    
+    public void resetFigure(){
+        switch(currentFigure){
+            case 1: //Pieza en J
                 this.board = Figuras.generateFigureJ(centerI, centerJ, rotation, this.board,0);
                 break;
-            case 2: //Pieza en O
+            case 2: //Pieza en L
                 this.board = Figuras.generateFigureL(centerI, centerJ, rotation, this.board,0);
                 break;
             case 3: //Pieza en O
                 this.board = Figuras.generateFigureO(centerI, centerJ, rotation, this.board,0);
                 break;
-            case 4: //Pieza en O
+            case 4: //Pieza en S
                 this.board = Figuras.generateFigureS(centerI, centerJ, rotation, this.board,0);
                 break;
-            case 5: //Pieza en O
+            case 5: //Pieza en Z
                 this.board = Figuras.generateFigureZ(centerI, centerJ, rotation, this.board,0);
                 break;
-            case 7: //Pieza en O
-                this.board = Figuras.generateFigureI(centerI, centerJ, rotation, this.board,0);
-                break;
-            case 6: //Pieza en O
+            case 6: //Pieza en T
                 this.board = Figuras.generateFigureT(centerI, centerJ, rotation, this.board,0);
                 break;
+            case 7: //Pieza en I
+                this.board = Figuras.generateFigureI(centerI, centerJ, rotation, this.board,0);
+                break;
+
         }
         
         
     }
-    public void fallFigure(int figure){
-        resetFigure(figure);
-        switch(figure){
+    
+    public void fallFigure(){
+        resetFigure();
+        switch(currentFigure){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI +1, centerJ, rotation, board)){
-                    centerI++;}
+                if (Figuras.validaMovimientoFiguraJ(centerI + 1, centerJ, rotation, board)){
+                    centerI++;
+                }
                 break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI +1, centerJ, rotation, board)){
-                    centerI++;}
+                if (Figuras.validaMovimientoFiguraL(centerI + 1, centerJ, rotation, board)){
+                    centerI++;
+                }
                 break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI +1, centerJ, rotation, board)){
-                    centerI++;}
+                if (Figuras.validaMovimientoFiguraO(centerI + 1, centerJ, rotation, board)){
+                    centerI++;
+                }
                 break;
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI +1, centerJ, rotation, board)){
-                    centerI++;}
+                if (Figuras.validaMovimientoFiguraS(centerI + 1, centerJ, rotation, board)){
+                    centerI++;
+                }
                 break;
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI +1, centerJ, rotation, board)){
-                    centerI++;}
+                if (Figuras.validaMovimientoFiguraZ(centerI + 1, centerJ, rotation, board)){
+                    centerI++;
+                }
                 break;
             case 7:
-                if (Figuras.validaMovimientoFiguraI(centerI + 1, centerJ, rotation, board))
-                    centerI++;    
+                if (Figuras.validaMovimientoFiguraI(centerI + 1, centerJ, rotation, board)){
+                    centerI++;
+                }
                 break;
             case 6:
                 if (Figuras.validaMovimientoFiguraT(centerI + 1, centerJ, rotation, board)){
-                    centerI++;}
+                    centerI++;
+                }
                 break; 
         }
-       generateFigure(figure, rotation); 
+       generateFigure();
     }
     
-    public void moveRight(int figure){
-        resetFigure(figure);
+    public void moveRight(){
+        resetFigure();
         
-        switch(figure){
+        switch(currentFigure){
             case 1:
                 if (Figuras.validaMovimientoFiguraJ(centerI, centerJ + 1, rotation, board)){
                     centerJ++;}
@@ -225,31 +271,31 @@ public class Board extends JPanel{
                     centerJ++;}
                     break;
         }
-        generateFigure(figure, rotation);
+        generateFigure();
         
     }
     
-    public void moveLeft(int figure){
-        resetFigure(figure);
-        switch(figure){
+    public void moveLeft(){
+        resetFigure();
+        switch(currentFigure){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI, centerJ-1, rotation, board)){
+                if (Figuras.validaMovimientoFiguraJ(centerI, centerJ- 1, rotation, board)){
                     centerJ--;}
                     break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI, centerJ-1, rotation, board)){
+                if (Figuras.validaMovimientoFiguraL(centerI, centerJ- 1, rotation, board)){
                     centerJ--;}
                     break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI, centerJ-1, rotation, board)){
+                if (Figuras.validaMovimientoFiguraO(centerI, centerJ- 1, rotation, board)){
                     centerJ--;}
                     break;
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI, centerJ-1, rotation, board)){
+                if (Figuras.validaMovimientoFiguraS(centerI, centerJ- 1, rotation, board)){
                     centerJ--;}
                     break;
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI, centerJ-1, rotation, board)){
+                if (Figuras.validaMovimientoFiguraZ(centerI, centerJ- 1, rotation, board)){
                     centerJ--;}
                     break;
                     
@@ -262,12 +308,12 @@ public class Board extends JPanel{
                     centerJ--;}
                     break;
         }
-        generateFigure(figure, rotation);
+        generateFigure();
     }
     
-    public void rotateFigure(int figure){
-        resetFigure(figure);
-        switch(figure){
+    public void rotateFigure(){
+        resetFigure();
+        switch(currentFigure){
             case 1:
                 if (Figuras.validaMovimientoFiguraJ(centerI, centerJ, (rotation +1) % 4, board)){
                 rotation = (rotation +1) % 4;}
@@ -295,7 +341,7 @@ public class Board extends JPanel{
                 rotation = (rotation +1) % 4;} 
                 break;
         }
-        generateFigure(figure, rotation);
+        generateFigure();
     }
     
     public int eliminaLineaLlena(int[][] board){
@@ -335,16 +381,137 @@ public class Board extends JPanel{
         }
         System.out.println("");
     }
+   
+    
+    // valida si la figura actual puede seguir cayendo
+    public boolean validFallFigure(){
+        boolean validFall = false;
+        resetFigure();
+        switch(currentFigure){
+            case 1:
+                if (Figuras.validaMovimientoFiguraJ(centerI + 1, centerJ, rotation, board)){
+                    validFall = true;
+                }
+                break;
+            case 2:
+                if (Figuras.validaMovimientoFiguraL(centerI + 1, centerJ, rotation, board)){
+                    validFall = true;
+                }
+                break;
+            case 3:
+                if (Figuras.validaMovimientoFiguraO(centerI +1, centerJ, rotation, board)){
+                    validFall = true;
+                }
+                break;
+            case 4:
+                if (Figuras.validaMovimientoFiguraS(centerI +1, centerJ, rotation, board)){
+                    validFall = true;
+                }
+                break;
+            case 5:
+                if (Figuras.validaMovimientoFiguraZ(centerI +1, centerJ, rotation, board)){
+                    validFall = true;
+                }
+                break;
+            case 7:
+                if (Figuras.validaMovimientoFiguraI(centerI + 1, centerJ, rotation, board)){
+                    validFall = true;
+                }
+                break;
+            case 6:
+                if (Figuras.validaMovimientoFiguraT(centerI + 1, centerJ, rotation, board)){
+
+                    validFall = true;
+                }
+                break; 
+        }
+        
+        
+        generateFigure();
+        return validFall;
+    }
+    
+    public void score(){
+        int cantLineas = 0;
+        boolean borrar;
+        for (int i = 0; i < 25; i++) {
+            borrar = true;
+            for (int j = 0; j < 10; j++) {
+                if(board[i][j] == 0){
+                    borrar = false;
+                    break;}
+            }
+            if (borrar){
+                    for (int k = i; k > 0 ; k--) {
+                        for (int l = 0; l < 10; l++) {
+                            board[k][l] = board[k-1][l];
+                        }}
+                 cantLineas++;  
+                }
+            }
+        score+= cantLineas;
+        // actualizar las lineas y los puntos en la pantalla
+    }
+    
+    public int resetLines(){
+        int cantLineas = 0;
+        boolean borrar;
+        for (int i = 0; i < 25; i++) {
+            borrar = true;
+            for (int j = 0; j < 10; j++) {
+                if(board[i][j] == 0){
+                    borrar = false;
+                    break;}
+            }
+            if (borrar){
+                    for (int k = i; k > 0 ; k--) {
+                        for (int l = 0; l < 10; l++) {
+                            board[k][l] = board[k-1][l];
+                        }}
+                 cantLineas++;  
+                }
+            }
+        return cantLineas;
+        }
+    
+    
+    private boolean validFullLine(int rowNumber){
+        for(int j = 0; j < COLS; j++){
+            if(board[rowNumber][j] == 0){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    private void resetFullLine(int rowNumber){
+        int rowTemp = rowNumber;
+        for(int j = 0; j < COLS; j++){
+            if(rowNumber == 0){
+                board[rowNumber][j] = 0;
+            }else{
+               while(rowTemp - 1 >= 0 && board[rowTemp][j] != 0){
+                   board[rowTemp][j] = board[rowTemp -1][j];
+                   rowTemp--;
+               }
+            }
+            
+            rowTemp = rowNumber;
+        }
+    }
+    
+    public boolean gameOver(){
+        for(int j = 0; j < COLS; j++){
+            if(board[5][j] != 0){
+                return true;
+            }
+        }
+        
+        return false;
+    }
     
     // GETTERS AND SETTERS
-     public int[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(int[][] board) {
-        this.board = board;
-    }
-
     public void setCenterI(int centerI) {
         this.centerI = centerI;
     }
@@ -369,8 +536,11 @@ public class Board extends JPanel{
         return centerJ;
     }
     
+    public int getRotation(){
+        return rotation;
+    }
+    public int getFigure(){
+        return currentFigure;
+    }
     
-    
-    
-    
-}
+} // fin clase
