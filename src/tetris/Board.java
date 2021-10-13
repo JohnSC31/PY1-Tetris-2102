@@ -250,7 +250,7 @@ public class Board extends JPanel{
                     centerJ++;}
                     break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI, centerJ + 2, rotation, board)){
+                if (Figuras.validaMovimientoFiguraO(centerI, centerJ + 1, rotation, board)){
                     centerJ++;}
                     break;
             
