@@ -9,13 +9,13 @@ package tetris;
  *
  * @author josa
  */
-public class FiguraT extends Figuras{
+public class FiguraT {
     private int fila = 0;
     private int columna;
     private String direcT;
 
     public FiguraT(int columna) {
-        super(0, columna);
+        
         this.columna = columna;
         
     }
@@ -34,7 +34,7 @@ public class FiguraT extends Figuras{
         return matriz;
     }
     
-    @Override
+   
     public int[][] moverAbajo(int[][] matriz){
         //Agregar restricciones
         switch (direcT) {
@@ -78,7 +78,7 @@ public class FiguraT extends Figuras{
        
     }
     
-    @Override
+    
     public int[][] moverDerecha(int[][] matriz){
         switch (direcT) {
             case "NORTE":
@@ -116,7 +116,7 @@ public class FiguraT extends Figuras{
         return matriz;
     }
     
-    @Override
+    
     public int[][] moverIzquierda(int[][] matriz){
         switch (direcT) {
             case "NORTE":
@@ -156,7 +156,7 @@ public class FiguraT extends Figuras{
         return matriz;
     }
     
-    @Override
+    
     public int[][] girar(int[][] matriz){
         switch (direcT) {
             case "NORTE":

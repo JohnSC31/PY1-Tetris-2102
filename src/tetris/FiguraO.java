@@ -9,12 +9,13 @@ package tetris;
  *
  * @author josa
  */
-public class FiguraO extends Figuras {
+public class FiguraO {
     private int fila = 0;
     private int columna;
+    
 
     public FiguraO(int columna) {
-        super(0, columna);
+        
         this.columna = columna;
         
         
@@ -23,19 +24,7 @@ public class FiguraO extends Figuras {
     // A ESTA CLASE DE FIGURA NO DEBERIA DE HACERLE UN NEW POR LO TANTO EL CONSTRUCTOR NO ES
     // NECESARIO LA IDEA ES HACER SOLAMENTE UN METODO ESTATICO PARA GENERAR O BORRAR LA FIGURA X
     // CON CENTRO I,J EN LA ROTACION n
-    
-  
-//    @Override
-//    public int[][] agregarFigura(int[][] matriz){
-//        
-//        for (int i = 0; i < 2; i++) {
-//            for (int j = columna; j < columna + 2; j++) {
-//                matriz[i][j] = 1;
-//            }   
-//        }
-//        
-//        return matriz;
-//    }
+   
     
     // PRUEBAS JOHN PARA AGREGAR FIGURA
     // se coloca el metodo estatico para no tener que hacer instancia de la clase para
@@ -55,50 +44,80 @@ public class FiguraO extends Figuras {
        board[centerI - 1][centerJ + 1] = 3; // esquina superior derecha
        board[centerI][centerJ + 1] = 3; // esquina inferior derecha
         
+       return board;
+    }
+    
+    public static int[][] resetFigure(int centerI, int centerJ, int rotation,int[][] board){
+       
+       board[centerI][centerJ] = 0; 
+       board[centerI  - 1][centerJ] = 0; 
+       board[centerI - 1][centerJ + 1] = 0; 
+       board[centerI][centerJ + 1] = 0; 
+        
         return board;
     }
-    @Override
-    public  int[][] moverAbajo(int[][] matriz){
-        //Agregar restricciones
+    
+    
+    
+    public static int[][] fallFigure(Board board1, int rotation){
+        int [][] board = board1.getBoard();
         
-        matriz[fila][columna] = 0;
-        matriz[fila][columna + 1] = 0;
+        int centerI = board1.getCenterI();
+        int centerJ = board1.getCenterJ();
         
-        matriz[fila+ 2][columna] = 1;
-        matriz[fila+ 2][columna + 1] = 1;
+        if(centerI + 1 < board1.getROWS() && board[centerI + 1][centerJ] == 0 && board[centerI + 1][centerJ+1] == 0 ){
+            board = resetFigure(centerI,centerJ, rotation, board);
         
-        fila++;
-        return matriz;
+            board = agregarFigura(centerI+1,centerJ, rotation, board);
+        
+            board1.setCenterI(centerI + 1); }
+        
+        return board;
     }
     
-    @Override
-    public int[][] moverDerecha(int[][] matriz){
-        matriz[fila][columna] = 0;
-        matriz[fila + 1][columna] = 0;
+    
+    public static int[][] moveRight(Board board1, int rotation){
+        int [][] board = board1.getBoard();
         
-        matriz[fila][columna + 2] = 1;
-        matriz[fila + 1][columna + 2] = 1;
+        int centerI = board1.getCenterI();
+        int centerJ = board1.getCenterJ();
         
-        columna++;
-        return matriz;
+        if(centerI + 1 < board1.getROWS() && centerJ + 2 < board1.getCOLS() && board[centerI][centerJ+2] == 0 ){
+            board = resetFigure(centerI, centerJ, rotation, board);
+        
+            board = agregarFigura(centerI, centerJ + 1, rotation, board);
+            
+            board1.setCenterJ(centerJ + 1); }
+        
+        
+        return board; 
     }
     
-    @Override
-    public int[][] moverIzquierda(int[][] matriz){
-        matriz[fila][columna + 1] = 0;
-        matriz[fila + 1][columna + 1] = 0;
+    
+    public static int[][] moveLeft(Board board1, int rotation){
+        int [][] board = board1.getBoard();
         
-        matriz[fila][columna - 1] = 1;
-        matriz[fila + 1][columna - 1] = 1;
+        int centerI = board1.getCenterI();
+        int centerJ = board1.getCenterJ();
         
-        columna--;
-        return matriz;
+        if(centerI + 1 < board1.getROWS() && centerJ - 1 >= 0 && board[centerI][centerJ - 1] == 0 ){
+            board = resetFigure(centerI, centerJ, rotation, board);
+        
+            board = agregarFigura(centerI, centerJ - 1, rotation, board);
+            board1.setCenterJ(centerJ + -1);}
+        
+        
+        return board; 
     }
     
-    @Override
-    public int[][] girar(int[][] matriz){
-        return matriz;
+    
+    public static int[][] girar(Board board1, int rotation){
+        int [][] board = board1.getBoard();
+        return board; 
     }
+
+    
+    
     
     
     
