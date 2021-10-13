@@ -298,6 +298,33 @@ public class Board extends JPanel{
         generateFigure(figure, rotation);
     }
     
+    public int eliminaLineaLlena(int[][] board){
+        //retorna la cantidad de lineas que se borraron (para calcular los puntos) 
+        //y se suma a la cantidad de lineas total;
+        
+        boolean borrar;
+        int cantLineas = 0;
+        for (int i = 4; i < ROWS; i++) { //empieza desde la primera fila que aparece en pantalla
+            borrar = true;
+            
+            for (int j = 0; j < COLS; j++) {
+                if(board[i][j] == 0){
+                    borrar = false;
+                    break;}
+            }
+            if (borrar){
+                for (int k = i; k > 0 ; k--) { // baja todas las lineas
+                    for (int l = 0; l < COLS; l++) {
+                        board[k][l] = board[k-1][l];
+                        }
+                }
+                cantLineas++;   
+                }
+            }
+        return cantLineas;
+        }
+    
+    
     // imprime la matriz en consola
     public void printConsoleBoard(){
         for (int i = 0; i < ROWS; i++) {
