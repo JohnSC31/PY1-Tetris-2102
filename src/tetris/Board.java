@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -474,6 +476,33 @@ public class Board extends JPanel{
         return cantLineas;
         }
     
+    private String[] nombres = new String[10];
+    private HashMap diccionario= new HashMap();
+    private ArrayList<Integer> scores = new ArrayList();
+     
+     public void agregaScoreARanking(String nombre, int score){
+        diccionario.put(score, nombre);
+        
+        if (scores.isEmpty()){ // si está vacío lo agrega
+            scores.add(score);
+            nombres[0] = nombre;
+        }
+        
+        else { 
+            scores.add(score);
+            Collections.sort(scores);
+            Collections.reverse(scores);
+            
+            if(scores.size() > 10){//elimina el último
+                scores.remove(10);}
+            
+            for (int i = 0; i < scores.size(); i++) {
+                nombre = (String)diccionario.get(scores.get(i));
+                nombres[i] = nombre;
+            }
+        }
+           
+    }
     
     private boolean validFullLine(int rowNumber){
         for(int j = 0; j < COLS; j++){
