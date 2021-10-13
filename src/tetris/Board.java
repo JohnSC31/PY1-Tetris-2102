@@ -235,10 +235,10 @@ public class Board extends JPanel{
        generateFigure();
     }
     
-    public void moveRight(int figure){
+    public void moveRight(){
         resetFigure();
         
-        switch(figure){
+        switch(currentFigure){
             case 1:
                 if (Figuras.validaMovimientoFiguraJ(centerI, centerJ + 1, rotation, board)){
                     centerJ++;}
@@ -311,9 +311,9 @@ public class Board extends JPanel{
         generateFigure();
     }
     
-    public void rotateFigure(int figure){
+    public void rotateFigure(){
         resetFigure();
-        switch(figure){
+        switch(currentFigure){
             case 1:
                 if (Figuras.validaMovimientoFiguraJ(centerI, centerJ, (rotation +1) % 4, board)){
                 rotation = (rotation +1) % 4;}
@@ -405,24 +405,48 @@ public class Board extends JPanel{
     }
     
     public void score(){
-        int linesInRow = 0;
-        for(int i = ROWS - 1; i > 4 ; i--){
-            // Realiza un recorrido de abajo hacia arriba para las columnas
-            if(validFullLine(i)){
-                resetFullLine(i);
-                linesInRow++;
+        int cantLineas = 0;
+        boolean borrar;
+        for (int i = 0; i < 25; i++) {
+            borrar = true;
+            for (int j = 0; j < 10; j++) {
+                if(board[i][j] == 0){
+                    borrar = false;
+                    break;}
             }
-        }
-        lines += linesInRow;
-        if(linesInRow > 2){
-            
-            this.score += linesInRow == 3 ? 4: 5; // sumara 4 puntos en caso de hacer 3 en linea, 5 si hace 4 o mas
-        }else{
-            score += linesInRow;
-        }
-        
+            if (borrar){
+                    for (int k = i; k > 0 ; k--) {
+                        for (int l = 0; l < 10; l++) {
+                            board[k][l] = board[k-1][l];
+                        }}
+                 cantLineas++;  
+                }
+            }
+        score+= cantLineas;
         // actualizar las lineas y los puntos en la pantalla
     }
+    
+    public int resetLines(){
+        int cantLineas = 0;
+        boolean borrar;
+        for (int i = 0; i < 25; i++) {
+            borrar = true;
+            for (int j = 0; j < 10; j++) {
+                if(board[i][j] == 0){
+                    borrar = false;
+                    break;}
+            }
+            if (borrar){
+                    for (int k = i; k > 0 ; k--) {
+                        for (int l = 0; l < 10; l++) {
+                            board[k][l] = board[k-1][l];
+                        }}
+                 cantLineas++;  
+                }
+            }
+        return cantLineas;
+        }
+    
     
     private boolean validFullLine(int rowNumber){
         for(int j = 0; j < COLS; j++){
