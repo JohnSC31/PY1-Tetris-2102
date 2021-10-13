@@ -33,16 +33,21 @@ public class ThreadGame extends Thread{
             try {
                 
                 sleep(1000); // Cambiar para los niveles
-                this.board.fallFigure();
                 
-                if(!board.validFallFigure()){
-                    board.score();
-                    board.generateNewFigure();
+//              System.out.println("Board: figura: " + board.getFigure()+" center[" + board.getCenterI() + "][" + board.getCenterJ() + "] " + "rotation: "  + board.getRotation());
+                
+                if(board.validFallFigure()){
+                    this.board.fallFigure();
+                    
+                }else{
+                    board.score(); // valida el score
+                    if(!board.gameOver()){
+                        board.generateNewFigure();
+                    }else{
+                        // enviar a pantalla o imprimir mensaje de juego terminado
+                    }
+                    
                 }
-                
-                
-                
-                
                 
                 while(isPause){
                     sleep(500);

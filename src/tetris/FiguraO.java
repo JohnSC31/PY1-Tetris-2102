@@ -59,62 +59,62 @@ public class FiguraO {
     
     
     
-    public static int[][] fallFigure(Board board1, int rotation){
-        int [][] board = board1.getBoard();
-        
-        int centerI = board1.getCenterI();
-        int centerJ = board1.getCenterJ();
-        
-        if(centerI + 1 < board1.getROWS() && board[centerI + 1][centerJ] == 0 && board[centerI + 1][centerJ+1] == 0 ){
-            board = resetFigure(centerI,centerJ, rotation, board);
-        
-            board = agregarFigura(centerI+1,centerJ, rotation, board);
-        
-            board1.setCenterI(centerI + 1); }
-        
-        return board;
-    }
+//    public static int[][] fallFigure(Board board1, int rotation){
+////        int [][] board = board1.getBoard();
+//        
+//        int centerI = board1.getCenterI();
+//        int centerJ = board1.getCenterJ();
+//        
+//        if(centerI + 1 < board1.getROWS() && board[centerI + 1][centerJ] == 0 && board[centerI + 1][centerJ+1] == 0 ){
+//            board = resetFigure(centerI,centerJ, rotation, board);
+//        
+//            board = agregarFigura(centerI+1,centerJ, rotation, board);
+//        
+//            board1.setCenterI(centerI + 1); }
+//        
+//        return board;
+//    }
     
     
-    public static int[][] moveRight(Board board1, int rotation){
-        int [][] board = board1.getBoard();
-        
-        int centerI = board1.getCenterI();
-        int centerJ = board1.getCenterJ();
-        
-        if(centerI + 1 < board1.getROWS() && centerJ + 2 < board1.getCOLS() && board[centerI][centerJ+2] == 0 ){
-            board = resetFigure(centerI, centerJ, rotation, board);
-        
-            board = agregarFigura(centerI, centerJ + 1, rotation, board);
-            
-            board1.setCenterJ(centerJ + 1); }
-        
-        
-        return board; 
-    }
+//    public static int[][] moveRight(Board board1, int rotation){
+////        int [][] board = board1.getBoard();
+//        
+//        int centerI = board1.getCenterI();
+//        int centerJ = board1.getCenterJ();
+//        
+//        if(centerI + 1 < board1.getROWS() && centerJ + 2 < board1.getCOLS() && board[centerI][centerJ+2] == 0 ){
+//            board = resetFigure(centerI, centerJ, rotation, board);
+//        
+//            board = agregarFigura(centerI, centerJ + 1, rotation, board);
+//            
+//            board1.setCenterJ(centerJ + 1); }
+//        
+//        
+//        return board; 
+//    }
     
     
-    public static int[][] moveLeft(Board board1, int rotation){
-        int [][] board = board1.getBoard();
-        
-        int centerI = board1.getCenterI();
-        int centerJ = board1.getCenterJ();
-        
-        if(centerI + 1 < board1.getROWS() && centerJ - 1 >= 0 && board[centerI][centerJ - 1] == 0 ){
-            board = resetFigure(centerI, centerJ, rotation, board);
-        
-            board = agregarFigura(centerI, centerJ - 1, rotation, board);
-            board1.setCenterJ(centerJ + -1);}
-        
-        
-        return board; 
-    }
+//    public static int[][] moveLeft(Board board1, int rotation){
+//        int [][] board = board1.getBoard();
+//        
+//        int centerI = board1.getCenterI();
+//        int centerJ = board1.getCenterJ();
+//        
+//        if(centerI + 1 < board1.getROWS() && centerJ - 1 >= 0 && board[centerI][centerJ - 1] == 0 ){
+//            board = resetFigure(centerI, centerJ, rotation, board);
+//        
+//            board = agregarFigura(centerI, centerJ - 1, rotation, board);
+//            board1.setCenterJ(centerJ + -1);}
+//        
+//        
+//        return board; 
+//    }
     
     
-    public static int[][] girar(Board board1, int rotation){
-        int [][] board = board1.getBoard();
-        return board; 
-    }
+//    public static int[][] girar(Board board1, int rotation){
+//        int [][] board = board1.getBoard();
+//        return board; 
+//    }
 
     
     

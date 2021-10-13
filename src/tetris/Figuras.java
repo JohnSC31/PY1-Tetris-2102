@@ -341,7 +341,7 @@ public class Figuras {
                 case 0: //norte
                     return
                     centerJ + 1 < cols
-                    && centerI < rows
+                    && centerI + 1 < rows
                     && centerJ >= 0
                     && board[centerI][centerJ] == 0
                     && board[centerI  - 1][centerJ] == 0
