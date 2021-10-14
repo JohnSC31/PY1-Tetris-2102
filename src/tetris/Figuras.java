@@ -36,8 +36,9 @@ public class Figuras {
         int cols = Board.COLS;
         return (centerI < rows )
                 && (centerJ >= 0)
-                && (centerJ < cols)
-                && board[centerI][centerJ] == 0;
+                && (centerJ + 1 < cols)
+                && board[centerI][centerJ] == 0
+                && board[centerI][centerJ+1] == 0;
         
     }
     
@@ -341,7 +342,7 @@ public class Figuras {
                 case 0: //norte
                     return
                     centerJ + 1 < cols
-                    && centerI < rows
+                    && centerI + 1 < rows
                     && centerJ >= 0
                     && board[centerI][centerJ] == 0
                     && board[centerI  - 1][centerJ] == 0
