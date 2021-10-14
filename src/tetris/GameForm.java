@@ -169,20 +169,20 @@ public class GameForm extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBajarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajarActionPerformed
-
+        game.board.fallFigure();
     }//GEN-LAST:event_btnBajarActionPerformed
 
     private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
-    
+        game.board.moveRight();
         
     }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
-
+        game.board.moveLeft();
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
     private void btnGirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGirarActionPerformed
-
+        game.board.rotateFigure();
     }//GEN-LAST:event_btnGirarActionPerformed
 
 
