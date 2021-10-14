@@ -5,6 +5,7 @@
  */
 package tetris;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -22,16 +23,20 @@ public class ThreadGame extends Thread{
     private int level = 1;
     private CronoThread gameTimer;
     private JLabel lblLevel;
+    private GameForm gameWindow;
+    
+    private MusicPlayer musicPlayer;
     
     // se pasan todos los componentes graficos para mostrar la informacion
     //panel principal los secundarios
     
-    ThreadGame(JPanel pnlBoard, JLabel lblTimer, JLabel lblScore, JLabel lblLines, JLabel lblLevel, JPanel pnlNext1, JPanel pnlNext2){
+    ThreadGame(GameForm gameWindow, JPanel pnlBoard, JLabel lblTimer, JLabel lblScore, JLabel lblLines, JLabel lblLevel, JPanel pnlNext1, JPanel pnlNext2){
+        this.gameWindow = gameWindow;
         this.board = new Board(pnlBoard, pnlNext1, pnlNext2, lblScore, lblLines);
         this.lblLevel = lblLevel;
         this.gameTimer = new CronoThread(lblTimer);
         this.gameTimer.start(); // se inicia el cronometro
-        
+        musicPlayer = new MusicPlayer("./src/Media/tetris-music.wav");
     }
     
     public void run(){
@@ -64,7 +69,9 @@ public class ThreadGame extends Thread{
                 
             }
             
-        }   
+        }  
+        
+        gameOver();
     }
 
     public void stopRunning(){
@@ -79,6 +86,10 @@ public class ThreadGame extends Thread{
         this.isPause = false;
     }
     
+    public boolean isRunning(){
+        return this.isRunning;
+    }
+    
     // revisa y cada 2 minutos del cronometro aumenta el nivel del 1 hasta el 10 
     public void levelUp(){
         if(level != this.gameTimer.getLevel()){
@@ -86,5 +97,11 @@ public class ThreadGame extends Thread{
             this.lblLevel.setText("Nivel " + level);
         }
         
+    }
+
+    private void gameOver() {
+        this.gameTimer.stopThread();
+        this.musicPlayer.getClip().stop();
+        this.gameWindow.gameOverAction();
     }
 }

@@ -76,6 +76,10 @@ public class CronoThread extends Thread {
         return gameLevel;
     }
     
+    public void stopThread(){
+        this.isRunning = false;
+    }
+    
     
     
     

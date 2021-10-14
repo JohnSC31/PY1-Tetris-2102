@@ -10,9 +10,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,13 +23,23 @@ import java.util.logging.Logger;
 public class GameForm extends javax.swing.JFrame{
     
     private ThreadGame game;
-//    Figuras num1= new FiguraO(5);
     
-    public GameForm() {
+    private MainForm mainWindow;
+    
+    public GameForm(MainForm mainWindow) {
+        this.mainWindow = mainWindow;
         initComponents();
         this.setSize(new Dimension(670, 640));
-        this.game = new ThreadGame(pnlBoard, lblTimer, lblScore, lblLines, lblLevel, pnlNext1, pnlNext2);
-        this.game.start();
+        this.game = new ThreadGame(this, pnlBoard, lblTimer, lblScore, lblLines, lblLevel, pnlNext1, pnlNext2);
+        this.game.start(); 
+    }
+    
+    
+    public void gameOverAction(){
+        JOptionPane.showMessageDialog(null, "Game Over \n Puntaje: " + game.board.getScore());
+        this.setVisible(false);
+        this.mainWindow.setFocusable(true);
+        this.mainWindow.setVisible(true);
     }
  
     @SuppressWarnings("unchecked")
@@ -49,6 +61,9 @@ public class GameForm extends javax.swing.JFrame{
         setResizable(false);
         setSize(new java.awt.Dimension(0, 600));
         addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
@@ -142,17 +157,35 @@ public class GameForm extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
- 
-        if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W){
-             game.board.rotateFigure();
-        }else if(evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S){
-            game.board.fallFigure();
-        }else if(evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D){
-            game.board.moveRight();
-        }else if(evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A){
-            game.board.moveLeft();
-        }
+        
+//        if(game.isRunning()){
+//            if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W){
+//             game.board.rotateFigure();
+//        }else if(evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S){
+//            game.board.fallFigure();
+//        }else if(evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D){
+//            game.board.moveRight();
+//        }else if(evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A){
+//            game.board.moveLeft();
+//        }
+//        }
+        
     }//GEN-LAST:event_formKeyReleased
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        
+        if(game.isRunning()){
+            if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W){
+             game.board.rotateFigure();
+            }else if(evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S){
+                game.board.fallFigure();
+            }else if(evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D){
+                game.board.moveRight();
+            }else if(evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A){
+                game.board.moveLeft();
+            }
+        }
+    }//GEN-LAST:event_formKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

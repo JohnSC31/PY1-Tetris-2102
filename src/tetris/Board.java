@@ -747,5 +747,11 @@ public class Board extends JPanel{
     public int getFigure(){
         return currentFigure;
     }
+
+    public int getScore() {
+        return score;
+    }
+    
+    
     
 } // fin clase
