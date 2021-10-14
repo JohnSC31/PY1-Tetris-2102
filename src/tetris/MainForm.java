@@ -5,6 +5,9 @@
  */
 package tetris;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  *
  * @author John
@@ -128,7 +131,9 @@ public class MainForm extends javax.swing.JFrame {
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         this.setVisible(false);
         this.gameWindow = new GameForm();
+        this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);
+        
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnRanking1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRanking1ActionPerformed

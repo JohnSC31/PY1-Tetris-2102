@@ -5,6 +5,7 @@
  */
 package tetris;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -18,13 +19,19 @@ public class ThreadGame extends Thread{
     
     
     public Board board;
-    private double level; // segundos
+    private int level = 1;
+    private CronoThread gameTimer;
+    private JLabel lblLevel;
     
     // se pasan todos los componentes graficos para mostrar la informacion
     //panel principal los secundarios
     
-    ThreadGame(JPanel pnlBoard){
-        this.board = new Board(pnlBoard);
+    ThreadGame(JPanel pnlBoard, JLabel lblTimer, JLabel lblScore, JLabel lblLines, JLabel lblLevel, JPanel pnlNext1, JPanel pnlNext2){
+        this.board = new Board(pnlBoard, pnlNext1, pnlNext2, lblScore, lblLines);
+        this.lblLevel = lblLevel;
+        this.gameTimer = new CronoThread(lblTimer);
+        this.gameTimer.start(); // se inicia el cronometro
+        
     }
     
     public void run(){
@@ -32,9 +39,8 @@ public class ThreadGame extends Thread{
         while(isRunning){
             try {
                 
-                sleep(1000); // Cambiar para los niveles
-                
-//              System.out.println("Board: figura: " + board.getFigure()+" center[" + board.getCenterI() + "][" + board.getCenterJ() + "] " + "rotation: "  + board.getRotation());
+                levelUp();
+                sleep(1000 - ((level - 1) * 100)); // Cambiar para los niveles
                 
                 if(board.validFallFigure()){
                     this.board.fallFigure();
@@ -45,6 +51,7 @@ public class ThreadGame extends Thread{
                         board.generateNewFigure();
                     }else{
                         // enviar a pantalla o imprimir mensaje de juego terminado
+                        stopRunning();
                     }
                     
                 }
@@ -59,8 +66,6 @@ public class ThreadGame extends Thread{
             
         }   
     }
-    
-    
 
     public void stopRunning(){
         this.isRunning = false;
@@ -72,5 +77,14 @@ public class ThreadGame extends Thread{
     
     public void resumeThread(){
         this.isPause = false;
+    }
+    
+    // revisa y cada 2 minutos del cronometro aumenta el nivel del 1 hasta el 10 
+    public void levelUp(){
+        if(level != this.gameTimer.getLevel()){
+            level = this.gameTimer.getLevel(); // se actualiza el nivel
+            this.lblLevel.setText("Nivel " + level);
+        }
+        
     }
 }

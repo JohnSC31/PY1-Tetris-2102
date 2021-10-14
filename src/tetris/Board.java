@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -26,6 +27,7 @@ public class Board extends JPanel{
     public static final int COLS = 10;
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;
+    // atributos para los paneles de las siguientes figuras
     
     // Definicion de los colores por tipo de pieza
     private static final Color COLORS[] = {
@@ -42,6 +44,8 @@ public class Board extends JPanel{
     private JPanel[][] boardPanels;
     private int[][] boardNextFigure1; // la figura siguiente
     private int [][] boardNextFigure2; // la figura siguiente siguiente
+    private JPanel[][] boardNextFigure1Panels;
+    private JPanel[][] boardNextFigure2Panels;
     private ArrayList queueFigures;
     private int score = 0;
     private int lines = 0;
@@ -52,13 +56,19 @@ public class Board extends JPanel{
     private int rotation;
     private int currentFigure;
     
-    // incorporar en la clase figura que realice Josa los atributos de la figura
-    
     private final JPanel panelBoard; // el panel donde se imprime la matriz
+    private final JPanel panelNext1;
+    private final JPanel panelNext2;
+    private final JLabel labelScore;
+    private final JLabel labelLines;
     
     // Constructor
-    public Board(JPanel pnlBoard){
+    public Board(JPanel pnlBoard, JPanel pnlNext1, JPanel pn1Next2, JLabel lblScore, JLabel lblLines){
         this.panelBoard = pnlBoard;
+        this.panelNext1 = pnlNext1;
+        this.panelNext2 = pn1Next2;
+        this.labelScore = lblScore;
+        this.labelLines = lblLines;
         initBoard(); // se inicializa la matriz
         initQueueFigures();
         generateNewFigure();
@@ -82,6 +92,43 @@ public class Board extends JPanel{
             x = 0;
             y += HEIGHT;
         }
+        
+        // inicializacion de las matrices para las siguientes figuras
+        y = 0;
+        x = 0;
+        this.boardNextFigure1 = new int[5][5];
+        this.boardNextFigure2 = new int[5][5];
+        
+        this.boardNextFigure1Panels = new JPanel[5][5];
+        this.boardNextFigure2Panels = new JPanel[5][5];
+        
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                this.boardNextFigure1[i][j] = 0;
+                this.boardNextFigure2[i][j] = 0;
+                
+                this.boardNextFigure1Panels[i][j] = createPanel(x, y, this.boardNextFigure1[i][j]);
+                this.panelNext1.add(this.boardNextFigure1Panels[i][j]);
+                
+                this.boardNextFigure2Panels[i][j] = createPanel(x, y, this.boardNextFigure2[i][j]);
+                this.panelNext2.add(this.boardNextFigure2Panels[i][j]);
+                
+                x += WIDTH;
+            }
+            x = 0;
+            y += HEIGHT;
+        }
+           
+    }
+    
+    private JPanel createPanel(int x , int y, int value){
+        JPanel panel = new JPanel();
+        panel.setBackground(COLORS[value]);
+        panel.setSize(WIDTH , HEIGHT);
+        panel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
+        panel.setLocation(x, y);     
+        return panel;
+    
     }
     
     // genera las primeras figuras
@@ -108,17 +155,20 @@ public class Board extends JPanel{
         panelBoard.repaint(); // vuelve a pintar el panel
     }
     
-    private JPanel createPanel(int x , int y, int value){
-        JPanel panel = new JPanel();
-        panel.setBackground(COLORS[value]);
-        panel.setSize(WIDTH , HEIGHT);
-        panel.setBorder(BorderFactory.createLineBorder(Color.white, 1));
-        panel.setLocation(x, y);     
-        return panel;
-    
+    private void printNextBoards(){
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                this.boardNextFigure1Panels[i][j].setBackground(COLORS[this.boardNextFigure1[i][j]]);
+                this.boardNextFigure2Panels[i][j].setBackground(COLORS[this.boardNextFigure2[i][j]]);
+            }
+        }
+        panelNext1.repaint(); // vuelve a pintar el panel
+        panelNext2.repaint();
     }
     
-    // PRUEBAS DE JOHN PARA LA IMPRESION DE LA FIGURA
+    
+    
+    //
     public void generateFigure(){
         switch(currentFigure){
             case 1: // se pinta la figura 1 la J
@@ -155,14 +205,70 @@ public class Board extends JPanel{
         
     }
     
+    public void generateNextFigure(int figure, int nextFigure){
+        switch(figure){
+            case 1: //Pieza en J
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure1,1);
+                else
+                    boardNextFigure2 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure2,1);
+                break;
+            case 2: //Pieza en L
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureL(2, 2, 0, boardNextFigure1,2);
+                else
+                    boardNextFigure2 = Figuras.generateFigureL(2, 2, 0, boardNextFigure2,2);
+                break;
+            case 3: //Pieza en 2
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureO(2, 2, 0, boardNextFigure1,3);
+                else
+                    boardNextFigure2 = Figuras.generateFigureO(2, 2, 0, boardNextFigure2,3);
+                break;
+            case 4: //Pieza en S
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureS(2, 2, 0, boardNextFigure1,4);
+                else 
+                    boardNextFigure2 = Figuras.generateFigureS(2, 2, 0, boardNextFigure2,4);
+                break;
+            case 5: //Pieza en Z
+                if (nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure1,5);
+                else
+                    boardNextFigure2 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure2,5);
+                break;
+            case 6: //Pieza en T
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureT(2, 2, 0, boardNextFigure1,6);
+                else 
+                    boardNextFigure2 = Figuras.generateFigureT(2, 2, 0, boardNextFigure2,6);
+                break;
+            case 7: //Pieza en I
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureI(2, 2, 0, boardNextFigure1,7);
+                else
+                    boardNextFigure2 = Figuras.generateFigureI(2, 2, 0, boardNextFigure2,7);
+                break;
+            
+        } 
+    }
+    
     public void generateNewFigure(){
-        System.out.println("Se genera una figura");
         this.currentFigure = (int)queueFigures.get(0);
+        // se eliminan las figuras siguientes
+        resetNextFigure(this.currentFigure, 1);
+        resetNextFigure((int)queueFigures.get(1), 2);
         queueFigures.remove(0);
         resetFigureCenter();
         this.rotation = 0;
         Random r = new Random();
         this.queueFigures.add(r.nextInt(7)+1);
+        // se generan las figuras siguientes y se pintan en los paneles
+        generateNextFigure((int)queueFigures.get(0), 1);
+        generateNextFigure((int)queueFigures.get(1), 2);
+        printNextBoards();
+        
+        // se genera la figura en el panel principal
         generateFigure();
     }
     
@@ -193,6 +299,55 @@ public class Board extends JPanel{
         }
         
         
+    }
+    
+    private void resetNextFigure(int figure, int nextFigure){
+
+        switch(figure){
+            case 1: //Pieza en J
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure1,0);
+                else
+                    boardNextFigure2 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure2,0);
+                break;
+            case 2: //Pieza en L
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureL(2, 2, 0, boardNextFigure1,0);
+                else
+                    boardNextFigure2 = Figuras.generateFigureL(2, 2, 0, boardNextFigure2,0);
+                break;
+            case 3: //Pieza en 2
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureO(2, 2, 0, boardNextFigure1,0);
+                else
+                    boardNextFigure2 = Figuras.generateFigureO(2, 2, 0, boardNextFigure2,0);
+                break;
+            case 4: //Pieza en S
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureS(2, 2, 0, boardNextFigure1,0);
+                else 
+                    boardNextFigure2 = Figuras.generateFigureS(2, 2, 0, boardNextFigure2,0);
+                break;
+            case 5: //Pieza en Z
+                if (nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure1,0);
+                else
+                    boardNextFigure2 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure2,0);
+                break;
+            case 6: //Pieza en T
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureT(2, 2, 0, boardNextFigure1,0);
+                else 
+                    boardNextFigure2 = Figuras.generateFigureT(2, 2, 0, boardNextFigure2,0);
+                break;
+            case 7: //Pieza en I
+                if(nextFigure == 1)
+                    boardNextFigure1 = Figuras.generateFigureI(2, 2, 0, boardNextFigure1,0);
+                else
+                    boardNextFigure2 = Figuras.generateFigureI(2, 2, 0, boardNextFigure2,0);
+                break;
+        }
+ 
     }
     
     public void fallFigure(){
@@ -451,8 +606,29 @@ public class Board extends JPanel{
                  cantLineas++;  
                 }
             }
-        score+= cantLineas;
+
+        updateScore(cantLineas);
         // actualizar las lineas y los puntos en la pantalla
+    }
+    
+    private void updateScore(int lines){
+        if(lines > 0){
+            this.lines += lines;
+            
+            this.labelLines.setText("Lineas " + this.lines);
+            if(lines < 3){
+                this.score += lines;
+                
+            }else if(lines < 4){
+                this.score += 4;
+                
+            }else{
+                this.score += 5;
+            }
+            
+            this.labelScore.setText("Puntos " + this.score);
+            
+        }
     }
     
     public int resetLines(){
