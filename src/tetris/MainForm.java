@@ -130,7 +130,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         this.setVisible(false);
-        this.gameWindow = new GameForm();
+        this.gameWindow = new GameForm(this);
         this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);
         
