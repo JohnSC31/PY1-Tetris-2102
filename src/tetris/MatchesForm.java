@@ -123,6 +123,7 @@ public class MatchesForm extends javax.swing.JFrame {
 
         pnlMatches.setBackground(new java.awt.Color(36, 36, 36));
         pnlMatches.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        pnlMatches.setAutoscrolls(true);
 
         javax.swing.GroupLayout pnlMatchesLayout = new javax.swing.GroupLayout(pnlMatches);
         pnlMatches.setLayout(pnlMatchesLayout);
