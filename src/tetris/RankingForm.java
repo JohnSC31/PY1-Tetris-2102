@@ -46,7 +46,7 @@ public class RankingForm extends javax.swing.JFrame {
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
         background.setMaximumSize(new java.awt.Dimension(500, 400));
         background.setMinimumSize(new java.awt.Dimension(500, 400));
-        background.setPreferredSize(new java.awt.Dimension(500, 400));
+        background.setPreferredSize(new java.awt.Dimension(500, 410));
 
         titleForm.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
         titleForm.setForeground(new java.awt.Color(255, 255, 255));
@@ -81,8 +81,8 @@ public class RankingForm extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(titleForm)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(222, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(212, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -94,8 +94,8 @@ public class RankingForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(titleForm)
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
                 .addContainerGap())
@@ -131,7 +131,7 @@ public class RankingForm extends javax.swing.JFrame {
     
     public void loadRanking(){
         String matchesStr = FileManager.readFile(MATCHFILEPATH);
-        if(matchesStr != ""){
+        if(!matchesStr.equals("")){
                 this.arrRankings = gson.fromJson(matchesStr, new TypeToken<ArrayList<Ranking>>(){}.getType()); // se carga la lista de partidas
         }
         

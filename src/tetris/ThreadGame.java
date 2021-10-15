@@ -47,12 +47,10 @@ public class ThreadGame extends Thread{
             try {
                 
                 levelUp();
-<<<<<<< HEAD
-                sleep(1000 - ((level - 1) * 200)); // Cambiar para los niveles
-=======
+
                 sleep(1000 - ((match.getLevel() - 1) * 100)); // Cambiar para los niveles
                 
->>>>>>> development
+
                 
                 if(board.validFallFigure()){
                     this.board.fallFigure();

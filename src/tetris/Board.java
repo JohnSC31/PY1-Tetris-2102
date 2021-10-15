@@ -42,21 +42,12 @@ public class Board extends JPanel{
         new Color(202,30,223), // 6 Pieza en T (Morado)
         new Color(223,30,141)}; // 7 Pieza en I (Rosado)
     
-    private int[][] board;
+    
     private JPanel[][] boardPanels;
-    private int[][] boardNextFigure1; // la figura siguiente
-    private int [][] boardNextFigure2; // la figura siguiente siguiente
+    
     private JPanel[][] boardNextFigure1Panels;
     private JPanel[][] boardNextFigure2Panels;
-    private ArrayList queueFigures;
-    private int score = 0;
-    private int lines = 0;
     
-    // los atributos de la figura actual
-    private int centerI;
-    private int centerJ;
-    private int rotation;
-    private int currentFigure;
     
     private final JPanel panelBoard; // el panel donde se imprime la matriz
     private final JPanel panelNext1;
@@ -264,13 +255,10 @@ public class Board extends JPanel{
         generateFigure();
     }
     
-<<<<<<< HEAD
-    private void resetFigure(){
-        switch(currentFigure){
-=======
+
     public void resetFigure(){
         switch(match.getCurrentFigure()){
->>>>>>> development
+
             case 1: //Pieza en J
                 match.setBoard(Figuras.generateFigureJ(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
@@ -602,84 +590,6 @@ public class Board extends JPanel{
         }
     }
     
-<<<<<<< HEAD
-=======
-    public int resetLines(){
-        int cantLineas = 0;
-        boolean borrar;
-        for (int i = 0; i < 25; i++) {
-            borrar = true;
-            for (int j = 0; j < 10; j++) {
-                if(match.getBoard()[i][j] == 0){
-                    borrar = false;
-                    break;}
-            }
-            if (borrar){
-                    for (int k = i; k > 0 ; k--) {
-                        for (int l = 0; l < 10; l++) {
-                           match.setBoardPos(k, l, match.getBoard()[k-1][l]);
-                        }}
-                 cantLineas++;  
-                }
-            }
-        return cantLineas;
-    }
-    
-    private String[] nombres = new String[10];
-    private HashMap diccionario= new HashMap();
-    private ArrayList<Integer> scores = new ArrayList();
-     
-     public void agregaScoreARanking(String nombre, int score){
-        diccionario.put(score, nombre);
-        
-        if (scores.isEmpty()){ // si está vacío lo agrega
-            scores.add(score);
-            nombres[0] = nombre;
-        }
-        
-        else { 
-            scores.add(score);
-            Collections.sort(scores);
-            Collections.reverse(scores);
-            
-            if(scores.size() > 10){//elimina el último
-                scores.remove(10);}
-            
-            for (int i = 0; i < scores.size(); i++) {
-                nombre = (String)diccionario.get(scores.get(i));
-                nombres[i] = nombre;
-            }
-        }
-           
-    }
-    
-    private boolean validFullLine(int rowNumber){
-        for(int j = 0; j < COLS; j++){
-            if(match.getBoard()[rowNumber][j] == 0){
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    private void resetFullLine(int rowNumber){
-        int rowTemp = rowNumber;
-        for(int j = 0; j < COLS; j++){
-            if(rowNumber == 0){
-                match.getBoard()[rowNumber][j] = 0;
-            }else{
-               while(rowTemp - 1 >= 0 && match.getBoard()[rowTemp][j] != 0){
-                   match.setBoardPos(rowTemp, j, match.getBoard()[rowTemp -1][j]);
-                   rowTemp--;
-               }
-            }
-            
-            rowTemp = rowNumber;
-        }
-    }
-    
->>>>>>> development
     public boolean gameOver(){
         for(int j = 0; j < COLS; j++){
             if(match.getBoard()[5][j] != 0){

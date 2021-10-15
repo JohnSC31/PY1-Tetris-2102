@@ -22,17 +22,12 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         
         // Se crean las ventanas utilizadas para la aplicacion
-<<<<<<< HEAD
-        this.matchesWindow = new MatchesForm(this);
-        
-        
-        
-=======
+
         
         this.gameWindow = new GameForm(this); // -1 indica que se debe crear una partida nueva
         this.matchesWindow = new MatchesForm(this, gameWindow);
         this.rankingWindow = new RankingForm(this);
->>>>>>> development
+
     }
     
     public String getPlayer(){
@@ -146,7 +141,7 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
-        this.gameWindow = new GameForm(this, txfName.getText());
+        
         this.setVisible(false);
         this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);

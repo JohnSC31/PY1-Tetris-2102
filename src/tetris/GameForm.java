@@ -31,18 +31,16 @@ import java.util.Comparator;
 public class GameForm extends javax.swing.JFrame{
     
     private ThreadGame game;
-<<<<<<< HEAD
-    private String nombreJugador;
+
+    
     private Gson gson = new Gson();
-=======
     public Match match;
     
->>>>>>> development
     private MainForm mainWindow;
     private final String MATCHFILEPATH = "./src/Data/Ranking.txt";
     
-    public GameForm(MainForm mainWindow, String nombreJugador) {
-        this.nombreJugador = nombreJugador;
+    public GameForm(MainForm mainWindow) {
+        
         this.mainWindow = mainWindow;
         initComponents();
         this.setSize(new Dimension(670, 640));
@@ -67,11 +65,9 @@ public class GameForm extends javax.swing.JFrame{
     
     public void gameOverAction(){
         JOptionPane.showMessageDialog(null, "Game Over \n Puntaje: " + game.board.getScore());
-<<<<<<< HEAD
         agregarARanking();
-=======
         MatchList.deleteMatch(match.getMatchIndex());
->>>>>>> development
+
         this.setVisible(false);
         this.mainWindow.setFocusable(true);
         this.mainWindow.setVisible(true);
@@ -224,22 +220,18 @@ public class GameForm extends javax.swing.JFrame{
             }
         }
     }//GEN-LAST:event_formKeyPressed
-<<<<<<< HEAD
+
     
     private void agregarARanking(){
-        
-        agregaScoreARanking(nombreJugador, lblTimer.getText(), game.board.getScore());
-        
+        agregaScoreARanking(this.mainWindow.getPlayer(),lblTimer.getText(), game.board.getScore());
         String representacionJSON = gson.toJson(arrRankings);
-//        System.out.println(representacionJSON);
         FileManager.writeToFile(MATCHFILEPATH, representacionJSON);
     }
     
+    
     private ArrayList<Ranking> arrRankings = new ArrayList(); //guardar en un
     
-    
-    
-     public void agregaScoreARanking(String nombre, String tiempo, int score){
+    public void agregaScoreARanking(String nombre, String tiempo, int score){
          loadRanking();
          Ranking r = new Ranking(nombre,tiempo,score);
          arrRankings.add(r);
@@ -252,13 +244,13 @@ public class GameForm extends javax.swing.JFrame{
      
     public void loadRanking(){
         String matchesStr = FileManager.readFile(MATCHFILEPATH);
-        if(matchesStr != ""){
+        if(!matchesStr.equals("")){
                 this.arrRankings = gson.fromJson(matchesStr, new TypeToken<ArrayList<Ranking>>(){}.getType()); // se carga la lista de partidas
         }
         
     }
     
-=======
+
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         this.game.stopRunning();
@@ -271,7 +263,7 @@ public class GameForm extends javax.swing.JFrame{
     }//GEN-LAST:event_btnSaveActionPerformed
 
 
->>>>>>> development
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
     private javax.swing.JPanel jPanel1;
