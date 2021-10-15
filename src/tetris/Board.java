@@ -274,7 +274,7 @@ public class Board extends JPanel{
         generateFigure();
     }
     
-    public void resetFigure(){
+    private void resetFigure(){
         switch(currentFigure){
             case 1: //Pieza en J
                 this.board = Figuras.generateFigureJ(centerI, centerJ, rotation, this.board,0);
@@ -503,32 +503,6 @@ public class Board extends JPanel{
         generateFigure();
     }
     
-    public int eliminaLineaLlena(int[][] board){
-        //retorna la cantidad de lineas que se borraron (para calcular los puntos) 
-        //y se suma a la cantidad de lineas total;
-        
-        boolean borrar;
-        int cantLineas = 0;
-        for (int i = 4; i < ROWS; i++) { //empieza desde la primera fila que aparece en pantalla
-            borrar = true;
-            
-            for (int j = 0; j < COLS; j++) {
-                if(board[i][j] == 0){
-                    borrar = false;
-                    break;}
-            }
-            if (borrar){
-                for (int k = i; k > 0 ; k--) { // baja todas las lineas
-                    for (int l = 0; l < COLS; l++) {
-                        board[k][l] = board[k-1][l];
-                        }
-                }
-                cantLineas++;   
-                }
-            }
-        return cantLineas;
-        }
-    
     
     // imprime la matriz en consola
     public void printConsoleBoard(){
@@ -630,55 +604,6 @@ public class Board extends JPanel{
             
             this.labelScore.setText("Puntos " + this.score);
             
-        }
-    }
-    
-    public int resetLines(){
-        int cantLineas = 0;
-        boolean borrar;
-        for (int i = 0; i < 25; i++) {
-            borrar = true;
-            for (int j = 0; j < 10; j++) {
-                if(board[i][j] == 0){
-                    borrar = false;
-                    break;}
-            }
-            if (borrar){
-                    for (int k = i; k > 0 ; k--) {
-                        for (int l = 0; l < 10; l++) {
-                            board[k][l] = board[k-1][l];
-                        }}
-                 cantLineas++;  
-                }
-            }
-        return cantLineas;
-        }
-    
-    
-    
-    private boolean validFullLine(int rowNumber){
-        for(int j = 0; j < COLS; j++){
-            if(board[rowNumber][j] == 0){
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    private void resetFullLine(int rowNumber){
-        int rowTemp = rowNumber;
-        for(int j = 0; j < COLS; j++){
-            if(rowNumber == 0){
-                board[rowNumber][j] = 0;
-            }else{
-               while(rowTemp - 1 >= 0 && board[rowTemp][j] != 0){
-                   board[rowTemp][j] = board[rowTemp -1][j];
-                   rowTemp--;
-               }
-            }
-            
-            rowTemp = rowNumber;
         }
     }
     

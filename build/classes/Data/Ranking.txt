@@ -1,1 +1,1 @@
-[{"nombre":"josa","tiempo":"01:14","score":2},{"nombre":"Josa","tiempo":"00:40","score":1}]
+[{"nombre":"josa","tiempo":"10:18","score":33},{"nombre":"josue","tiempo":"00:13","score":0}]

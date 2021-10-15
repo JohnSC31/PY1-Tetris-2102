@@ -35,13 +35,18 @@ public class RankingForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JLabel();
         titleForm = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        background = new javax.swing.JLabel();
+        txaRanking = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
+        background.setMaximumSize(new java.awt.Dimension(500, 400));
+        background.setMinimumSize(new java.awt.Dimension(500, 400));
+        background.setPreferredSize(new java.awt.Dimension(500, 400));
 
         titleForm.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
         titleForm.setForeground(new java.awt.Color(255, 255, 255));
@@ -54,14 +59,14 @@ public class RankingForm extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
+        txaRanking.setEditable(false);
+        txaRanking.setBackground(new java.awt.Color(36, 36, 36));
+        txaRanking.setColumns(20);
+        txaRanking.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txaRanking.setForeground(new java.awt.Color(255, 255, 255));
+        txaRanking.setRows(5);
+        txaRanking.setBorder(null);
+        jScrollPane1.setViewportView(txaRanking);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,12 +81,12 @@ public class RankingForm extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(titleForm)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(436, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(222, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(background)
+                    .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -90,14 +95,14 @@ public class RankingForm extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(titleForm)
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnBack)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(background)
+                    .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -114,12 +119,12 @@ public class RankingForm extends javax.swing.JFrame {
     private void mostrarRanking(){
         loadRanking();
         if (arrRankings == null)
-            jTextArea1.setText("El ranking está vació");
+            txaRanking.setText("El ranking está vació");
         else{
-        jTextArea1.setText("");
-        jTextArea1.setText("Nombre \tTiempo \tPuntaje");
+        txaRanking.setText("");
+        txaRanking.setText("Nombre \tTiempo \tPuntaje");
         for (int i = 0; i < arrRankings.size(); i++) {
-            jTextArea1.setText(jTextArea1.getText() + "\n" + (i+1) + ".  " + arrRankings.get(i).toString());
+            txaRanking.setText(txaRanking.getText() + "\n" + (i+1) + ".  " + arrRankings.get(i).toString());
         }
         }
     }
@@ -137,7 +142,7 @@ public class RankingForm extends javax.swing.JFrame {
     private javax.swing.JLabel background;
     private javax.swing.JButton btnBack;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel titleForm;
+    private javax.swing.JTextArea txaRanking;
     // End of variables declaration//GEN-END:variables
 }
