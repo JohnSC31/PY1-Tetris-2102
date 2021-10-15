@@ -25,6 +25,7 @@ public class CronoThread extends Thread {
     }
     
     
+    @Override
     public void run(){
          while(isRunning){
 
