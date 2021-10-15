@@ -20,6 +20,11 @@ public class MainForm extends javax.swing.JFrame {
     
     public MainForm() {
         initComponents();
+        
+        // Se crean las ventanas utilizadas para la aplicacion
+        this.matchesWindow = new MatchesForm(this);
+        this.rankingWindow = new RankingForm(this);
+        this.gameWindow = new GameForm(this);
     }
 
     /**
@@ -130,7 +135,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         this.setVisible(false);
-        this.gameWindow = new GameForm(this);
         this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);
         
@@ -138,18 +142,16 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnRanking1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRanking1ActionPerformed
         this.setVisible(false);
-        this.rankingWindow = new RankingForm(this);
         this.rankingWindow.setVisible(true);
     }//GEN-LAST:event_btnRanking1ActionPerformed
 
     private void btnMatchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchesActionPerformed
-         this.setVisible(false);
-        this.matchesWindow = new MatchesForm(this);
+        this.setVisible(false);
         this.matchesWindow.setVisible(true);
     }//GEN-LAST:event_btnMatchesActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void txfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfNameActionPerformed
