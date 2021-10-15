@@ -1,1 +1,1 @@
-[{"level":3,"score":10,"lines":4,"currentFigure":0,"rotation":0,"centerI":0,"centerJ":0,"minutes":0,"seconds":0,"player":"John"}]
+[]

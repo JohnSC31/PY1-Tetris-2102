@@ -20,32 +20,35 @@ public class ThreadGame extends Thread{
     
     
     public Board board;
-    private int level = 1;
     private CronoThread gameTimer;
     private JLabel lblLevel;
     private GameForm gameWindow;
+    private Match match;
+    
+    
     
     private MusicPlayer musicPlayer;
     
     // se pasan todos los componentes graficos para mostrar la informacion
     //panel principal los secundarios
     
-    ThreadGame(GameForm gameWindow, JPanel pnlBoard, JLabel lblTimer, JLabel lblScore, JLabel lblLines, JLabel lblLevel, JPanel pnlNext1, JPanel pnlNext2){
+    ThreadGame(GameForm gameWindow, JPanel pnlBoard, JLabel lblTimer, JLabel lblScore, JLabel lblLines, JLabel lblLevel, JPanel pnlNext1, JPanel pnlNext2, Match match){
+        this.match = match;
         this.gameWindow = gameWindow;
-        this.board = new Board(pnlBoard, pnlNext1, pnlNext2, lblScore, lblLines);
+        this.board = new Board(pnlBoard, pnlNext1, pnlNext2, lblScore, lblLines, match);
         this.lblLevel = lblLevel;
-        this.gameTimer = new CronoThread(lblTimer);
+        this.gameTimer = new CronoThread(lblTimer, match);
         this.gameTimer.start(); // se inicia el cronometro
         musicPlayer = new MusicPlayer("./src/Media/tetris-music.wav");
     }
     
     public void run(){
-        
         while(isRunning){
             try {
                 
                 levelUp();
-                sleep(1000 - ((level - 1) * 100)); // Cambiar para los niveles
+                sleep(1000 - ((match.getLevel() - 1) * 100)); // Cambiar para los niveles
+                
                 
                 if(board.validFallFigure()){
                     this.board.fallFigure();
@@ -55,13 +58,14 @@ public class ThreadGame extends Thread{
                     if(!board.gameOver()){
                         board.generateNewFigure();
                     }else{
-                        // enviar a pantalla o imprimir mensaje de juego terminado
                         stopRunning();
+                        gameOver();
                     }
                     
                 }
                 
                 while(isPause){
+                    System.out.println("Estoy en pausa");
                     sleep(500);
                 }
 
@@ -71,7 +75,7 @@ public class ThreadGame extends Thread{
             
         }  
         
-        gameOver();
+       
     }
 
     public void stopRunning(){
@@ -90,18 +94,38 @@ public class ThreadGame extends Thread{
         return this.isRunning;
     }
     
+    public String getStatus(){
+        return "Runnig: " + isRunning + " - Pause: " + isPause; 
+    }
+    
     // revisa y cada 2 minutos del cronometro aumenta el nivel del 1 hasta el 10 
     public void levelUp(){
-        if(level != this.gameTimer.getLevel()){
-            level = this.gameTimer.getLevel(); // se actualiza el nivel
-            this.lblLevel.setText("Nivel " + level);
+        if(match.getLevel() != this.gameTimer.getLevel()){
+            match.setLevel(this.gameTimer.getLevel()); // se actualiza el nivel
+            this.lblLevel.setText("Nivel " + match.getLevel());
         }
         
     }
 
     private void gameOver() {
         this.gameTimer.stopThread();
-        this.musicPlayer.getClip().stop();
+        this.musicPlayer.getClip().close();
         this.gameWindow.gameOverAction();
     }
+    
+    // GETTERS AND SETTERS
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public CronoThread getGameTimer() {
+        return gameTimer;
+    }
+
+    public MusicPlayer getMusicPlayer() {
+        return musicPlayer;
+    }
+
+    
 }
