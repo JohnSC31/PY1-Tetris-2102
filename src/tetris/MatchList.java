@@ -17,7 +17,7 @@ public class MatchList {
     public static ArrayList<Match> getMatchList(){
         String matchesStr = FileManager.readFile(MATCHFILEPATH);
         ArrayList<Match> matchList = new ArrayList<>();
-        if(matchesStr != ""){
+        if(!matchesStr.equals("")){
                matchList = gson.fromJson(matchesStr, new TypeToken<ArrayList<Match>>(){}.getType()); // se carga la lista de partidas
         }
         

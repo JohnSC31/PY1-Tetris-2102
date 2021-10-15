@@ -11,8 +11,8 @@ package tetris;
  */
 public class Figuras {
     
-    int ROWS = Board.ROWS;
-    int COLS = Board.COLS;
+    private int ROWS = Board.ROWS;
+    private int COLS = Board.COLS;
     
     public static int[][] generateFigureO(int centerI, int centerJ, int rotation,  int[][] board, int figure){
        // una vez definido que el centro de la figura es la esquina inferior izquieda
