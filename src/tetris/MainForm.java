@@ -16,15 +16,16 @@ public class MainForm extends javax.swing.JFrame {
     
     private MatchesForm matchesWindow;
     private RankingForm rankingWindow;
-    private GameForm gameWindow;
+    public GameForm gameWindow;
     
     public MainForm() {
         initComponents();
         
         // Se crean las ventanas utilizadas para la aplicacion
         this.matchesWindow = new MatchesForm(this);
-        this.rankingWindow = new RankingForm(this);
-        this.gameWindow = new GameForm(this);
+        
+        
+        
     }
 
     /**
@@ -134,6 +135,7 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
+        this.gameWindow = new GameForm(this, txfName.getText());
         this.setVisible(false);
         this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);
@@ -142,6 +144,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnRanking1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRanking1ActionPerformed
         this.setVisible(false);
+        this.rankingWindow = new RankingForm(this);
         this.rankingWindow.setVisible(true);
     }//GEN-LAST:event_btnRanking1ActionPerformed
 

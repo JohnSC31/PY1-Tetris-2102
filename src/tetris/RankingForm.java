@@ -5,6 +5,11 @@
  */
 package tetris;
 
+import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 /**
  *
  * @author John
@@ -12,10 +17,13 @@ package tetris;
 public class RankingForm extends javax.swing.JFrame {
     
     private MainForm mainWindow;
+    private final String MATCHFILEPATH = "./src/Data/Ranking.txt";
+    private Gson gson = new Gson();
     
     public RankingForm(MainForm mainWindow) {
         initComponents();
         this.mainWindow = mainWindow;
+        mostrarRanking();
     }
 
     /**
@@ -29,6 +37,8 @@ public class RankingForm extends javax.swing.JFrame {
 
         titleForm = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -44,6 +54,13 @@ public class RankingForm extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -57,12 +74,14 @@ public class RankingForm extends javax.swing.JFrame {
                         .addComponent(btnBack))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addComponent(titleForm)))
-                .addContainerGap(333, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titleForm)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(436, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(background)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -70,13 +89,15 @@ public class RankingForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(titleForm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(btnBack)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(background)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -87,11 +108,36 @@ public class RankingForm extends javax.swing.JFrame {
         this.setVisible(false);
         this.mainWindow.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
-
+    
+    ArrayList arrRankings;
+    
+    private void mostrarRanking(){
+        loadRanking();
+        if (arrRankings == null)
+            jTextArea1.setText("El ranking está vació");
+        else{
+        jTextArea1.setText("");
+        jTextArea1.setText("Nombre \tTiempo \tPuntaje");
+        for (int i = 0; i < arrRankings.size(); i++) {
+            jTextArea1.setText(jTextArea1.getText() + "\n" + (i+1) + ".  " + arrRankings.get(i).toString());
+        }
+        }
+    }
+    
+    public void loadRanking(){
+        String matchesStr = FileManager.readFile(MATCHFILEPATH);
+        if(matchesStr != ""){
+                this.arrRankings = gson.fromJson(matchesStr, new TypeToken<ArrayList<Ranking>>(){}.getType()); // se carga la lista de partidas
+        }
+        
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
     private javax.swing.JButton btnBack;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel titleForm;
     // End of variables declaration//GEN-END:variables
 }
