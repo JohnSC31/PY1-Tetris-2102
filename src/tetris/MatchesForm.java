@@ -55,7 +55,7 @@ public class MatchesForm extends javax.swing.JFrame {
             this.buttons.add(createMatchButton("Jugar", x, y, i, this));
             this.pnlMatches.add(buttons.get(i));
             
-            x = 0;
+            x = 10;
             y += 50;
         }
         
@@ -121,7 +121,7 @@ public class MatchesForm extends javax.swing.JFrame {
         });
         jPanel1.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, -1, -1));
 
-        pnlMatches.setBackground(new java.awt.Color(0, 0, 0));
+        pnlMatches.setBackground(new java.awt.Color(36, 36, 36));
         pnlMatches.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         javax.swing.GroupLayout pnlMatchesLayout = new javax.swing.GroupLayout(pnlMatches);
@@ -132,10 +132,10 @@ public class MatchesForm extends javax.swing.JFrame {
         );
         pnlMatchesLayout.setVerticalGroup(
             pnlMatchesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 238, Short.MAX_VALUE)
+            .addGap(0, 268, Short.MAX_VALUE)
         );
 
-        jPanel1.add(pnlMatches, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 270, 240));
+        jPanel1.add(pnlMatches, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 270, 270));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
         jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 400));
