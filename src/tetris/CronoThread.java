@@ -17,36 +17,33 @@ import javax.swing.JLabel;
 public class CronoThread extends Thread {
     private JLabel timeLabel;
     private boolean isRunning = true;
-    private int segundos = 0;
-    private int minutos = 0;
-    private int gameLevel = 1;
+    private Match match;
     
-    public CronoThread(JLabel timeLabel){
+    public CronoThread(JLabel timeLabel, Match match){
         this.timeLabel = timeLabel;
-
+        this.match = match;
     }
     
     
     public void run(){
          while(isRunning){
-            
-            
+
             try {
                 sleep(1000);
                 
-                segundos++;
-                if (segundos > 59){
-                    segundos = 0;
-                    minutos++;
-                    if(minutos > 0 && minutos % 2 == 0 && gameLevel < 10){
-                        gameLevel++;
+                match.setSeconds(match.getSeconds() + 1);
+                if (match.getSeconds() > 59){
+                    match.setSeconds(0);
+                     match.setMinutes(match.getMinutes() + 1);
+                    if(match.getMinutes() > 0 && match.getMinutes() % 2 == 0 && match.getLevel() < 10){
+                        match.setLevel(match.getLevel() + 1);
                     }
-                    if(minutos > 59){
-                        minutos = 0;
+                    if(match.getMinutes() > 59){
+                        match.setMinutes(0);
                     }
                 }
          
-                String timeStr = setNiceTime(minutos) + ":" +  setNiceTime(segundos);
+                String timeStr = setNiceTime(match.getMinutes()) + ":" +  setNiceTime(match.getSeconds());
                 timeLabel.setText(timeStr);
                 
             } catch (InterruptedException ex) {
@@ -65,15 +62,15 @@ public class CronoThread extends Thread {
     // GETTERS AND SETTERS
 
     public int getSegundos() {
-        return segundos;
+        return match.getSeconds();
     }
 
     public int getMinutos() {
-        return minutos;
+        return match.getMinutes();
     }
     
     public int getLevel(){
-        return gameLevel;
+        return match.getLevel();
     }
     
     public void stopThread(){

@@ -22,12 +22,23 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         
         // Se crean las ventanas utilizadas para la aplicacion
+<<<<<<< HEAD
         this.matchesWindow = new MatchesForm(this);
         
         
         
+=======
+        
+        this.gameWindow = new GameForm(this); // -1 indica que se debe crear una partida nueva
+        this.matchesWindow = new MatchesForm(this, gameWindow);
+        this.rankingWindow = new RankingForm(this);
+>>>>>>> development
     }
-
+    
+    public String getPlayer(){
+        return this.txfName.getText();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -139,7 +150,7 @@ public class MainForm extends javax.swing.JFrame {
         this.setVisible(false);
         this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);
-        
+        this.gameWindow.startGame(-1);
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnRanking1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRanking1ActionPerformed
@@ -151,6 +162,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnMatchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchesActionPerformed
         this.setVisible(false);
         this.matchesWindow.setVisible(true);
+        this.matchesWindow.loadMatches();
     }//GEN-LAST:event_btnMatchesActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

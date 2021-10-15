@@ -63,17 +63,22 @@ public class Board extends JPanel{
     private final JPanel panelNext2;
     private final JLabel labelScore;
     private final JLabel labelLines;
+    private Match match;
     
     // Constructor
-    public Board(JPanel pnlBoard, JPanel pnlNext1, JPanel pn1Next2, JLabel lblScore, JLabel lblLines){
+    public Board(JPanel pnlBoard, JPanel pnlNext1, JPanel pn1Next2, JLabel lblScore, JLabel lblLines, Match match){
         this.panelBoard = pnlBoard;
         this.panelNext1 = pnlNext1;
         this.panelNext2 = pn1Next2;
         this.labelScore = lblScore;
         this.labelLines = lblLines;
+        this.match = match;
         initBoard(); // se inicializa la matriz
-        initQueueFigures();
-        generateNewFigure();
+        initScores();
+        if(match.getCurrentFigure() == -1){
+            generateNewFigure();
+        }
+        
         printBoard(); // se imprime por primera vez la matriz
         
     }
@@ -82,12 +87,10 @@ public class Board extends JPanel{
     private void initBoard(){
         int x = 0;
         int y = 0 -((ROWS - 20) * HEIGHT); // oculta las filas de arriba para que solo se muestren 20
-        this.board = new int[ROWS][COLS];
         this.boardPanels = new JPanel[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                this.board[i][j] = 0;
-                this.boardPanels[i][j] = createPanel(x, y, this.board[i][j]);
+                this.boardPanels[i][j] = createPanel(x, y, this.match.getBoard()[i][j]);
                 this.panelBoard.add(this.boardPanels[i][j]);
                 x += WIDTH;
             }
@@ -98,21 +101,16 @@ public class Board extends JPanel{
         // inicializacion de las matrices para las siguientes figuras
         y = 0;
         x = 0;
-        this.boardNextFigure1 = new int[5][5];
-        this.boardNextFigure2 = new int[5][5];
         
         this.boardNextFigure1Panels = new JPanel[5][5];
         this.boardNextFigure2Panels = new JPanel[5][5];
         
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                this.boardNextFigure1[i][j] = 0;
-                this.boardNextFigure2[i][j] = 0;
-                
-                this.boardNextFigure1Panels[i][j] = createPanel(x, y, this.boardNextFigure1[i][j]);
+                this.boardNextFigure1Panels[i][j] = createPanel(x, y, this.match.getBoardNextFigure1()[i][j]);
                 this.panelNext1.add(this.boardNextFigure1Panels[i][j]);
                 
-                this.boardNextFigure2Panels[i][j] = createPanel(x, y, this.boardNextFigure2[i][j]);
+                this.boardNextFigure2Panels[i][j] = createPanel(x, y, this.match.getBoardNextFigure2()[i][j]);
                 this.panelNext2.add(this.boardNextFigure2Panels[i][j]);
                 
                 x += WIDTH;
@@ -133,25 +131,20 @@ public class Board extends JPanel{
     
     }
     
-    // genera las primeras figuras
-    private void initQueueFigures(){
-        this.queueFigures = new ArrayList();
-        Random r = new Random();
-        for(int i = 0; i < 3; i++){
-            this.queueFigures.add(r.nextInt(7)+1);
-        }
-         
+    private void resetFigureCenter(){
+        this.match.setCenterI(3);
+        this.match.setCenterJ(4);
     }
     
-    private void resetFigureCenter(){
-        this.centerI = 3;
-        this.centerJ = 4;
+    private void initScores(){
+        this.labelLines.setText("Lineas " + match.getLines());
+        this.labelScore.setText("Puntos " + match.getScore());
     }
     
     public void printBoard(){
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                this.boardPanels[i][j].setBackground(COLORS[this.board[i][j]]);
+                this.boardPanels[i][j].setBackground(COLORS[this.match.getBoardPos(i, j)]);
             }
         }
         panelBoard.repaint(); // vuelve a pintar el panel
@@ -160,45 +153,42 @@ public class Board extends JPanel{
     private void printNextBoards(){
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                this.boardNextFigure1Panels[i][j].setBackground(COLORS[this.boardNextFigure1[i][j]]);
-                this.boardNextFigure2Panels[i][j].setBackground(COLORS[this.boardNextFigure2[i][j]]);
+                this.boardNextFigure1Panels[i][j].setBackground(COLORS[this.match.getBoardNextFigure1()[i][j]]);
+                this.boardNextFigure2Panels[i][j].setBackground(COLORS[this.match.getBoardNextFigure2()[i][j]]);
             }
         }
         panelNext1.repaint(); // vuelve a pintar el panel
         panelNext2.repaint();
     }
     
-    
-    
-    //
     public void generateFigure(){
-        switch(currentFigure){
+        switch(this.match.getCurrentFigure()){
             case 1: // se pinta la figura 1 la J
-                this.board = Figuras.generateFigureJ(centerI, centerJ, rotation, this.board,1);
+                this.match.setBoard(Figuras.generateFigureJ(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),1));
                 break;
             
             case 2: // se pinta la figura 2 la L
-                this.board = Figuras.generateFigureL(centerI, centerJ, rotation, this.board,2);
+                this.match.setBoard(Figuras.generateFigureL(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),2));
                 break;    
                 
             case 3: // se pinta la figura 3 la O
-                this.board = Figuras.generateFigureO(centerI, centerJ, rotation, this.board,3);
+                this.match.setBoard(Figuras.generateFigureO(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),3));
                 break;
             
             case 4: // se pinta la figura 4 la S
-                this.board = Figuras.generateFigureS(centerI, centerJ, rotation, this.board,4);
+                this.match.setBoard(Figuras.generateFigureS(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),4));
                 break; 
             
             case 5: // se pinta la figura 5 la Z
-                this.board = Figuras.generateFigureZ(centerI, centerJ, rotation, this.board,5);
+                this.match.setBoard(Figuras.generateFigureZ(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),5));
                 break;
             
             case 6: // se pinta la figura 6 la T
-                this.board = Figuras.generateFigureT(centerI, centerJ, rotation, this.board,6);
+                this.match.setBoard(Figuras.generateFigureT(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),6));
                 break;
                 
             case 7: // se pinta la figura 7 la I
-                this.board = Figuras.generateFigureI(centerI, centerJ, rotation, this.board,7);
+                this.match.setBoard(Figuras.generateFigureI(match.getCenterI(), match.getCenterJ(), match.getRotation(), this.match.getBoard(),7));
                 break;
             
         }
@@ -211,91 +201,96 @@ public class Board extends JPanel{
         switch(figure){
             case 1: //Pieza en J
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure1,1);
+                    match.setBoardNextFigure1(Figuras.generateFigureJ(2, 2, 0, match.getBoardNextFigure1(),1));
                 else
-                    boardNextFigure2 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure2,1);
+                    match.setBoardNextFigure2(Figuras.generateFigureJ(2, 2, 0, match.getBoardNextFigure2(),1));
                 break;
             case 2: //Pieza en L
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureL(2, 2, 0, boardNextFigure1,2);
+                    match.setBoardNextFigure1(Figuras.generateFigureL(2, 2, 0, match.getBoardNextFigure1(),2));
                 else
-                    boardNextFigure2 = Figuras.generateFigureL(2, 2, 0, boardNextFigure2,2);
+                    match.setBoardNextFigure2(Figuras.generateFigureL(2, 2, 0, match.getBoardNextFigure2(),2));
                 break;
             case 3: //Pieza en 2
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureO(2, 2, 0, boardNextFigure1,3);
+                    match.setBoardNextFigure1(Figuras.generateFigureO(2, 2, 0, match.getBoardNextFigure1(),3));
                 else
-                    boardNextFigure2 = Figuras.generateFigureO(2, 2, 0, boardNextFigure2,3);
+                    match.setBoardNextFigure2(Figuras.generateFigureO(2, 2, 0, match.getBoardNextFigure2(),3));
                 break;
             case 4: //Pieza en S
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureS(2, 2, 0, boardNextFigure1,4);
-                else 
-                    boardNextFigure2 = Figuras.generateFigureS(2, 2, 0, boardNextFigure2,4);
+                    match.setBoardNextFigure1(Figuras.generateFigureS(2, 2, 0, match.getBoardNextFigure1(),4));
+                else
+                    match.setBoardNextFigure2(Figuras.generateFigureS(2, 2, 0, match.getBoardNextFigure2(),4));
                 break;
             case 5: //Pieza en Z
-                if (nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure1,5);
+                if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureZ(2, 2, 0, match.getBoardNextFigure1(),5));
                 else
-                    boardNextFigure2 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure2,5);
+                    match.setBoardNextFigure2(Figuras.generateFigureZ(2, 2, 0, match.getBoardNextFigure2(),5));
                 break;
             case 6: //Pieza en T
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureT(2, 2, 0, boardNextFigure1,6);
-                else 
-                    boardNextFigure2 = Figuras.generateFigureT(2, 2, 0, boardNextFigure2,6);
+                    match.setBoardNextFigure1(Figuras.generateFigureT(2, 2, 0, match.getBoardNextFigure1(),6));
+                else
+                    match.setBoardNextFigure2(Figuras.generateFigureT(2, 2, 0, match.getBoardNextFigure2(),6));
                 break;
             case 7: //Pieza en I
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureI(2, 2, 0, boardNextFigure1,7);
+                    match.setBoardNextFigure1(Figuras.generateFigureI(2, 2, 0, match.getBoardNextFigure1(),7));
                 else
-                    boardNextFigure2 = Figuras.generateFigureI(2, 2, 0, boardNextFigure2,7);
+                    match.setBoardNextFigure2(Figuras.generateFigureI(2, 2, 0, match.getBoardNextFigure2(),7));
                 break;
             
         } 
     }
     
     public void generateNewFigure(){
-        this.currentFigure = (int)queueFigures.get(0);
+        match.setCurrentFigure(match.getQuereFigure(0));
         // se eliminan las figuras siguientes
-        resetNextFigure(this.currentFigure, 1);
-        resetNextFigure((int)queueFigures.get(1), 2);
-        queueFigures.remove(0);
+        resetNextFigure(match.getCurrentFigure(), 1);
+        resetNextFigure((int)match.getQueueFigures().get(1), 2);
+        match.getQueueFigures().remove(0);
         resetFigureCenter();
-        this.rotation = 0;
+        match.setRotation(0);
         Random r = new Random();
-        this.queueFigures.add(r.nextInt(7)+1);
+        match.getQueueFigures().add(r.nextInt(7)+1);
         // se generan las figuras siguientes y se pintan en los paneles
-        generateNextFigure((int)queueFigures.get(0), 1);
-        generateNextFigure((int)queueFigures.get(1), 2);
+        generateNextFigure((int)match.getQueueFigures().get(0), 1);
+        generateNextFigure((int)match.getQueueFigures().get(1), 2);
         printNextBoards();
         
         // se genera la figura en el panel principal
         generateFigure();
     }
     
+<<<<<<< HEAD
     private void resetFigure(){
         switch(currentFigure){
+=======
+    public void resetFigure(){
+        switch(match.getCurrentFigure()){
+>>>>>>> development
             case 1: //Pieza en J
-                this.board = Figuras.generateFigureJ(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureJ(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
             case 2: //Pieza en L
-                this.board = Figuras.generateFigureL(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureL(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
             case 3: //Pieza en O
-                this.board = Figuras.generateFigureO(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureO(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
             case 4: //Pieza en S
-                this.board = Figuras.generateFigureS(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureS(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
             case 5: //Pieza en Z
-                this.board = Figuras.generateFigureZ(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureZ(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
             case 6: //Pieza en T
-                this.board = Figuras.generateFigureT(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureT(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
             case 7: //Pieza en I
-                this.board = Figuras.generateFigureI(centerI, centerJ, rotation, this.board,0);
+                match.setBoard(Figuras.generateFigureI(match.getCenterI(), match.getCenterJ(), match.getRotation(), match.getBoard(),0));
                 break;
 
         }
@@ -308,45 +303,45 @@ public class Board extends JPanel{
         switch(figure){
             case 1: //Pieza en J
                 if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure1,0);
+                    match.setBoardNextFigure1(Figuras.generateFigureJ(2, 2, 0, match.getBoardNextFigure1(),0));
                 else
-                    boardNextFigure2 = Figuras.generateFigureJ(2, 2, 0, boardNextFigure2,0);
+                    match.setBoardNextFigure2(Figuras.generateFigureJ(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
             case 2: //Pieza en L
-                if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureL(2, 2, 0, boardNextFigure1,0);
+                 if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureL(2, 2, 0, match.getBoardNextFigure1(),0));
                 else
-                    boardNextFigure2 = Figuras.generateFigureL(2, 2, 0, boardNextFigure2,0);
+                    match.setBoardNextFigure2(Figuras.generateFigureL(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
             case 3: //Pieza en 2
-                if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureO(2, 2, 0, boardNextFigure1,0);
+                 if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureO(2, 2, 0, match.getBoardNextFigure1(),0));
                 else
-                    boardNextFigure2 = Figuras.generateFigureO(2, 2, 0, boardNextFigure2,0);
+                    match.setBoardNextFigure2(Figuras.generateFigureO(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
             case 4: //Pieza en S
-                if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureS(2, 2, 0, boardNextFigure1,0);
-                else 
-                    boardNextFigure2 = Figuras.generateFigureS(2, 2, 0, boardNextFigure2,0);
+                 if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureS(2, 2, 0, match.getBoardNextFigure1(),0));
+                else
+                    match.setBoardNextFigure2(Figuras.generateFigureS(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
             case 5: //Pieza en Z
-                if (nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure1,0);
+                 if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureZ(2, 2, 0, match.getBoardNextFigure1(),0));
                 else
-                    boardNextFigure2 = Figuras.generateFigureZ(2, 2, 0, boardNextFigure2,0);
+                    match.setBoardNextFigure2(Figuras.generateFigureZ(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
             case 6: //Pieza en T
-                if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureT(2, 2, 0, boardNextFigure1,0);
-                else 
-                    boardNextFigure2 = Figuras.generateFigureT(2, 2, 0, boardNextFigure2,0);
+                 if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureT(2, 2, 0, match.getBoardNextFigure1(),0));
+                else
+                    match.setBoardNextFigure2(Figuras.generateFigureT(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
             case 7: //Pieza en I
-                if(nextFigure == 1)
-                    boardNextFigure1 = Figuras.generateFigureI(2, 2, 0, boardNextFigure1,0);
+                 if(nextFigure == 1)
+                    match.setBoardNextFigure1(Figuras.generateFigureI(2, 2, 0, match.getBoardNextFigure1(),0));
                 else
-                    boardNextFigure2 = Figuras.generateFigureI(2, 2, 0, boardNextFigure2,0);
+                    match.setBoardNextFigure2(Figuras.generateFigureI(2, 2, 0, match.getBoardNextFigure2(),0));
                 break;
         }
  
@@ -354,40 +349,40 @@ public class Board extends JPanel{
     
     public void fallFigure(){
         resetFigure();
-        switch(currentFigure){
+        switch(match.getCurrentFigure()){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraJ(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraL(match.getCenterI() + 1, match.getCenterJ(),  match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraO(match.getCenterI() + 1, match.getCenterJ(),  match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break;
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraS(match.getCenterI() + 1, match.getCenterJ(),  match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break;
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraZ(match.getCenterI() + 1, match.getCenterJ(),  match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break;
             case 7:
-                if (Figuras.validaMovimientoFiguraI(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraI(match.getCenterI() + 1, match.getCenterJ(),  match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break;
             case 6:
-                if (Figuras.validaMovimientoFiguraT(centerI + 1, centerJ, rotation, board)){
-                    centerI++;
+                if (Figuras.validaMovimientoFiguraT(match.getCenterI() + 1, match.getCenterJ(),  match.getRotation(), match.getBoard())){
+                    match.setCenterI(match.getCenterI() + 1);
                 }
                 break; 
         }
@@ -397,37 +392,37 @@ public class Board extends JPanel{
     public void moveRight(){
         resetFigure();
         
-        switch(currentFigure){
+        switch(match.getCurrentFigure()){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraJ(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraL(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraO(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;
             
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraS(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;
             
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraZ(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;  
                     
             case 7:
-                if (Figuras.validaMovimientoFiguraI(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraI(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;
             case 6:
-                if (Figuras.validaMovimientoFiguraT(centerI, centerJ + 1, rotation, board)){
-                    centerJ++;}
+                if (Figuras.validaMovimientoFiguraT(match.getCenterI(), match.getCenterJ() + 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() + 1);}
                     break;
         }
         generateFigure();
@@ -436,35 +431,35 @@ public class Board extends JPanel{
     
     public void moveLeft(){
         resetFigure();
-        switch(currentFigure){
+        switch(match.getCurrentFigure()){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI, centerJ- 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraJ(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI, centerJ- 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraL(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI, centerJ- 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraO(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI, centerJ- 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraS(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI, centerJ- 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraZ(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
                     
             case 7:
-                if (Figuras.validaMovimientoFiguraI(centerI, centerJ - 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraI(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
             case 6:
-                if (Figuras.validaMovimientoFiguraT(centerI, centerJ - 1, rotation, board)){
-                    centerJ--;}
+                if (Figuras.validaMovimientoFiguraT(match.getCenterI(), match.getCenterJ()- 1, match.getRotation(), match.getBoard())){
+                    match.setCenterJ(match.getCenterJ() - 1);}
                     break;
         }
         generateFigure();
@@ -472,32 +467,32 @@ public class Board extends JPanel{
     
     public void rotateFigure(){
         resetFigure();
-        switch(currentFigure){
+        switch(match.getCurrentFigure()){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI, centerJ, (rotation +1) % 4, board)){
-                rotation = (rotation +1) % 4;}
+                if (Figuras.validaMovimientoFiguraJ(match.getCenterI(), match.getCenterJ(), (match.getRotation() +1) % 4, match.getBoard())){
+                match.setRotation((match.getRotation() + 1) % 4);}
                 break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI, centerJ, (rotation +1) % 4, board)){
-                rotation = (rotation +1) % 4;}
+                if (Figuras.validaMovimientoFiguraL(match.getCenterI(), match.getCenterJ(), (match.getRotation() +1) % 4, match.getBoard())){
+                match.setRotation((match.getRotation() + 1) % 4);}
                 break;
             case 3: 
                 break;
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI, centerJ, (rotation +1) % 4, board)){
-                rotation = (rotation +1) % 4;}
+                if (Figuras.validaMovimientoFiguraS(match.getCenterI(), match.getCenterJ(), (match.getRotation() +1) % 4, match.getBoard())){
+                match.setRotation((match.getRotation() + 1) % 4);}
                 break;
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI, centerJ, (rotation +1) % 4, board)){
-                rotation = (rotation +1) % 4;}
+                if (Figuras.validaMovimientoFiguraZ(match.getCenterI(), match.getCenterJ(), (match.getRotation() +1) % 4, match.getBoard())){
+                match.setRotation((match.getRotation() + 1) % 4);}
                 break;
             case 7:
-                if (Figuras.validaMovimientoFiguraI(centerI, centerJ, (rotation +1) % 4, board)){
-                rotation = (rotation +1) % 4;}
+                if (Figuras.validaMovimientoFiguraI(match.getCenterI(), match.getCenterJ(), (match.getRotation() +1) % 4, match.getBoard())){
+                match.setRotation((match.getRotation() + 1) % 4);}
                 break;
             case 6:
-                if (Figuras.validaMovimientoFiguraT(centerI, centerJ, (rotation +1) % 4, board)){
-                rotation = (rotation +1) % 4;} 
+                if (Figuras.validaMovimientoFiguraT(match.getCenterI(), match.getCenterJ(), (match.getRotation() +1) % 4, match.getBoard())){
+                match.setRotation((match.getRotation() + 1) % 4);} 
                 break;
         }
         generateFigure();
@@ -508,7 +503,7 @@ public class Board extends JPanel{
     public void printConsoleBoard(){
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                System.out.print(board[i][j] + " ");
+                System.out.print(match.getBoard()[i][j] + " ");
             }
             System.out.println("");
         }
@@ -520,39 +515,39 @@ public class Board extends JPanel{
     public boolean validFallFigure(){
         boolean validFall = false;
         resetFigure();
-        switch(currentFigure){
+        switch(match.getCurrentFigure()){
             case 1:
-                if (Figuras.validaMovimientoFiguraJ(centerI + 1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraJ(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
                     validFall = true;
                 }
                 break;
             case 2:
-                if (Figuras.validaMovimientoFiguraL(centerI + 1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraL(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
                     validFall = true;
                 }
                 break;
             case 3:
-                if (Figuras.validaMovimientoFiguraO(centerI +1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraO(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
                     validFall = true;
                 }
                 break;
             case 4:
-                if (Figuras.validaMovimientoFiguraS(centerI +1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraS(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
                     validFall = true;
                 }
                 break;
             case 5:
-                if (Figuras.validaMovimientoFiguraZ(centerI +1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraZ(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
                     validFall = true;
                 }
                 break;
             case 7:
-                if (Figuras.validaMovimientoFiguraI(centerI + 1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraI(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
                     validFall = true;
                 }
                 break;
             case 6:
-                if (Figuras.validaMovimientoFiguraT(centerI + 1, centerJ, rotation, board)){
+                if (Figuras.validaMovimientoFiguraT(match.getCenterI() + 1, match.getCenterJ(), match.getRotation(), match.getBoard())){
 
                     validFall = true;
                 }
@@ -570,14 +565,14 @@ public class Board extends JPanel{
         for (int i = 0; i < 25; i++) {
             borrar = true;
             for (int j = 0; j < 10; j++) {
-                if(board[i][j] == 0){
+                if(match.getBoard()[i][j] == 0){
                     borrar = false;
                     break;}
             }
             if (borrar){
                     for (int k = i; k > 0 ; k--) {
                         for (int l = 0; l < 10; l++) {
-                            board[k][l] = board[k-1][l];
+                            match.setBoardPos(k, l, match.getBoard()[k-1][l]);
                         }}
                  cantLineas++;  
                 }
@@ -589,27 +584,105 @@ public class Board extends JPanel{
     
     private void updateScore(int lines){
         if(lines > 0){
-            this.lines += lines;
+            match.setLines(match.getLines() + 1);
             
-            this.labelLines.setText("Lineas " + this.lines);
+            this.labelLines.setText("Lineas " + match.getLines());
             if(lines < 3){
-                this.score += lines;
+                match.setScore(match.getScore() + lines);
                 
             }else if(lines < 4){
-                this.score += 4;
+                match.setScore(match.getScore() + 4);
                 
             }else{
-                this.score += 5;
+                match.setScore(match.getScore() + 5);
             }
             
-            this.labelScore.setText("Puntos " + this.score);
+            this.labelScore.setText("Puntos " + match.getScore());
             
         }
     }
     
+<<<<<<< HEAD
+=======
+    public int resetLines(){
+        int cantLineas = 0;
+        boolean borrar;
+        for (int i = 0; i < 25; i++) {
+            borrar = true;
+            for (int j = 0; j < 10; j++) {
+                if(match.getBoard()[i][j] == 0){
+                    borrar = false;
+                    break;}
+            }
+            if (borrar){
+                    for (int k = i; k > 0 ; k--) {
+                        for (int l = 0; l < 10; l++) {
+                           match.setBoardPos(k, l, match.getBoard()[k-1][l]);
+                        }}
+                 cantLineas++;  
+                }
+            }
+        return cantLineas;
+    }
+    
+    private String[] nombres = new String[10];
+    private HashMap diccionario= new HashMap();
+    private ArrayList<Integer> scores = new ArrayList();
+     
+     public void agregaScoreARanking(String nombre, int score){
+        diccionario.put(score, nombre);
+        
+        if (scores.isEmpty()){ // si está vacío lo agrega
+            scores.add(score);
+            nombres[0] = nombre;
+        }
+        
+        else { 
+            scores.add(score);
+            Collections.sort(scores);
+            Collections.reverse(scores);
+            
+            if(scores.size() > 10){//elimina el último
+                scores.remove(10);}
+            
+            for (int i = 0; i < scores.size(); i++) {
+                nombre = (String)diccionario.get(scores.get(i));
+                nombres[i] = nombre;
+            }
+        }
+           
+    }
+    
+    private boolean validFullLine(int rowNumber){
+        for(int j = 0; j < COLS; j++){
+            if(match.getBoard()[rowNumber][j] == 0){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    private void resetFullLine(int rowNumber){
+        int rowTemp = rowNumber;
+        for(int j = 0; j < COLS; j++){
+            if(rowNumber == 0){
+                match.getBoard()[rowNumber][j] = 0;
+            }else{
+               while(rowTemp - 1 >= 0 && match.getBoard()[rowTemp][j] != 0){
+                   match.setBoardPos(rowTemp, j, match.getBoard()[rowTemp -1][j]);
+                   rowTemp--;
+               }
+            }
+            
+            rowTemp = rowNumber;
+        }
+    }
+    
+>>>>>>> development
     public boolean gameOver(){
         for(int j = 0; j < COLS; j++){
-            if(board[5][j] != 0){
+            if(match.getBoard()[5][j] != 0){
                 return true;
             }
         }
@@ -619,11 +692,11 @@ public class Board extends JPanel{
     
     // GETTERS AND SETTERS
     public void setCenterI(int centerI) {
-        this.centerI = centerI;
+        this.match.setCenterI(centerI);
     }
 
     public void setCenterJ(int centerJ) {
-        this.centerJ = centerJ;
+        this.match.setCenterJ(centerJ);
     }
 
     public static int getROWS() {
@@ -635,22 +708,22 @@ public class Board extends JPanel{
     }
 
     public int getCenterI() {
-        return centerI;
+        return match.getCenterI();
     }
 
     public int getCenterJ() {
-        return centerJ;
+        return match.getCenterI();
     }
     
     public int getRotation(){
-        return rotation;
+        return match.getRotation();
     }
     public int getFigure(){
-        return currentFigure;
+        return match.getCurrentFigure();
     }
 
     public int getScore() {
-        return score;
+        return match.getScore();
     }
     
     

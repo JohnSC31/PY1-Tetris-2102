@@ -5,6 +5,8 @@
  */
 package tetris;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -12,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import static java.lang.Thread.sleep;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -28,8 +31,13 @@ import java.util.Comparator;
 public class GameForm extends javax.swing.JFrame{
     
     private ThreadGame game;
+<<<<<<< HEAD
     private String nombreJugador;
     private Gson gson = new Gson();
+=======
+    public Match match;
+    
+>>>>>>> development
     private MainForm mainWindow;
     private final String MATCHFILEPATH = "./src/Data/Ranking.txt";
     
@@ -38,18 +46,38 @@ public class GameForm extends javax.swing.JFrame{
         this.mainWindow = mainWindow;
         initComponents();
         this.setSize(new Dimension(670, 640));
-        this.game = new ThreadGame(this, pnlBoard, lblTimer, lblScore, lblLines, lblLevel, pnlNext1, pnlNext2);
+        
+    }
+    
+    public void startGame(int indexMatch){
+        // se limpian los paneles
+        pnlBoard.removeAll(); 
+        pnlNext1.removeAll(); 
+        pnlNext2.removeAll();
+         
+        if(indexMatch == -1){ // se crea una partida nueva
+            this.match = new Match(mainWindow.getPlayer());
+        }else{
+            this.match = MatchList.getMatch(indexMatch);
+        }
+        this.game = new ThreadGame(this, pnlBoard, lblTimer, lblScore, lblLines, lblLevel, pnlNext1, pnlNext2, match);
         this.game.start(); 
     }
     
     
     public void gameOverAction(){
         JOptionPane.showMessageDialog(null, "Game Over \n Puntaje: " + game.board.getScore());
+<<<<<<< HEAD
         agregarARanking();
+=======
+        MatchList.deleteMatch(match.getMatchIndex());
+>>>>>>> development
         this.setVisible(false);
         this.mainWindow.setFocusable(true);
         this.mainWindow.setVisible(true);
+        // se elimina la partida de la lista de partidas guardadas
     }
+    
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -64,6 +92,7 @@ public class GameForm extends javax.swing.JFrame{
         pnlNext1 = new javax.swing.JPanel();
         pnlNext2 = new javax.swing.JPanel();
         lblTimer = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(672, 600));
@@ -160,25 +189,25 @@ public class GameForm extends javax.swing.JFrame{
         lblTimer.setToolTipText("");
         jPanel1.add(lblTimer, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 21, 93, 34));
 
+        btnSave.setBackground(new java.awt.Color(0, 0, 0));
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
+        btnSave.setText("Guardar y Salir");
+        btnSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnSave.setFocusable(false);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 477, 120, 40));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 658, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-        
-//        if(game.isRunning()){
-//            if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_W){
-//             game.board.rotateFigure();
-//        }else if(evt.getKeyCode() == KeyEvent.VK_DOWN || evt.getKeyCode() == KeyEvent.VK_S){
-//            game.board.fallFigure();
-//        }else if(evt.getKeyCode() == KeyEvent.VK_RIGHT || evt.getKeyCode() == KeyEvent.VK_D){
-//            game.board.moveRight();
-//        }else if(evt.getKeyCode() == KeyEvent.VK_LEFT || evt.getKeyCode() == KeyEvent.VK_A){
-//            game.board.moveLeft();
-//        }
-//        }
-        
+
     }//GEN-LAST:event_formKeyReleased
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -195,6 +224,7 @@ public class GameForm extends javax.swing.JFrame{
             }
         }
     }//GEN-LAST:event_formKeyPressed
+<<<<<<< HEAD
     
     private void agregarARanking(){
         
@@ -228,7 +258,22 @@ public class GameForm extends javax.swing.JFrame{
         
     }
     
+=======
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        this.game.stopRunning();
+        this.game.getGameTimer().stopThread();
+        this.game.getMusicPlayer().getClip().close();
+        MatchList.saveMatch(this.match);
+        this.setVisible(false);
+        this.mainWindow.setFocusable(true);
+        this.mainWindow.setVisible(true);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+
+>>>>>>> development
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSave;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblLevel;
     private javax.swing.JLabel lblLines;
@@ -239,6 +284,7 @@ public class GameForm extends javax.swing.JFrame{
     private javax.swing.JPanel pnlNext1;
     private javax.swing.JPanel pnlNext2;
     // End of variables declaration//GEN-END:variables
+
 
 
 }
