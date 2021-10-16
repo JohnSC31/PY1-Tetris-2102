@@ -75,6 +75,10 @@ public class Match {
          
     }
     
+    
+    public void print(){
+        System.out.println("Mi partida" + player +" puntaje" + score);
+    }
 
     
     

@@ -34,10 +34,6 @@ public class MainForm extends javax.swing.JFrame {
         return this.txfName.getText();
     }
     
-    public void setPlayer(String nombre){
-        this.txfName.setText(nombre);
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,9 +156,8 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnMatchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchesActionPerformed
         this.setVisible(false);
-        this.matchesWindow.loadMatches();
         this.matchesWindow.setVisible(true);
-        
+        this.matchesWindow.loadMatches();
     }//GEN-LAST:event_btnMatchesActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

@@ -48,7 +48,7 @@ public class ThreadGame extends Thread{
                 
                 levelUp();
 
-                sleep(900 - ((match.getLevel() - 1) * 200)); // Cambiar para los niveles
+                sleep(1000 - ((match.getLevel() - 1) * 100)); // Cambiar para los niveles
                 
 
                 
@@ -102,9 +102,10 @@ public class ThreadGame extends Thread{
     
     // revisa y cada 2 minutos del cronometro aumenta el nivel del 1 hasta el 10 
     public void levelUp(){
-         // se actualiza el nivel
+        if(match.getLevel() != this.gameTimer.getLevel()){
+            match.setLevel(this.gameTimer.getLevel()); // se actualiza el nivel
             this.lblLevel.setText("Nivel " + match.getLevel());
-        
+        }
         
     }
 
