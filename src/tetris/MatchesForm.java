@@ -53,6 +53,7 @@ public class MatchesForm extends javax.swing.JFrame {
             this.pnlMatches.add(createMatchLabel(matchList.get(i).getDate(), x,y, 100));
             x += 105;
             this.buttons.add(createMatchButton("Jugar", x, y, i, this));
+            System.out.println("Button :" + x + ":" + y +": "+ i);
             this.pnlMatches.add(buttons.get(i));
             
             x = 10;
