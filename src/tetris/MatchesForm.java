@@ -36,7 +36,7 @@ public class MatchesForm extends javax.swing.JFrame {
         this.mainWindow = mainWindow;
         this.gameWindow = gameWindow;
         this.matchList = new ArrayList<>();
-        this.buttons = new ArrayList<>();
+//        this.buttons = new ArrayList<>();
         
         
     }
@@ -52,8 +52,7 @@ public class MatchesForm extends javax.swing.JFrame {
             x += 55;
             this.pnlMatches.add(createMatchLabel(matchList.get(i).getDate(), x,y, 100));
             x += 105;
-            this.buttons.add(createMatchButton("Jugar", x, y, i, this));
-            this.pnlMatches.add(buttons.get(i));
+            this.pnlMatches.add(createMatchButton("Jugar", x, y, i, this));
             
             x = 10;
             y += 50;
