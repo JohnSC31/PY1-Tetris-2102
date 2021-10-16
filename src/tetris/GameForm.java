@@ -259,6 +259,7 @@ public class GameForm extends javax.swing.JFrame{
         this.game.getMusicPlayer().getClip().close();
         MatchList.saveMatch(this.match);
         this.setVisible(false);
+        this.mainWindow.setPlayer("");
         this.mainWindow.setFocusable(true);
         this.mainWindow.setVisible(true);
     }//GEN-LAST:event_btnSaveActionPerformed
