@@ -5,6 +5,9 @@
  */
 package tetris;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  *
  * @author John
@@ -13,12 +16,28 @@ public class MainForm extends javax.swing.JFrame {
     
     private MatchesForm matchesWindow;
     private RankingForm rankingWindow;
-    private GameForm gameWindow;
+    public GameForm gameWindow;
     
     public MainForm() {
         initComponents();
-    }
+        
+        // Se crean las ventanas utilizadas para la aplicacion
 
+        
+        this.gameWindow = new GameForm(this); // -1 indica que se debe crear una partida nueva
+        this.matchesWindow = new MatchesForm(this, gameWindow);
+        this.rankingWindow = new RankingForm(this);
+
+    }
+    
+    public String getPlayer(){
+        return this.txfName.getText();
+    }
+    
+    public void setPlayer(String nombre){
+        this.txfName.setText(nombre);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,6 +53,8 @@ public class MainForm extends javax.swing.JFrame {
         btnRanking1 = new javax.swing.JButton();
         btnMatches = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        lblName = new javax.swing.JLabel();
+        txfName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,12 +69,13 @@ public class MainForm extends javax.swing.JFrame {
         btnPlay.setBackground(new java.awt.Color(255, 255, 255));
         btnPlay.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnPlay.setText("Jugar");
+        btnPlay.setEnabled(false);
         btnPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPlayActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPlay, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 140, 30));
+        jPanel1.add(btnPlay, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, 140, 30));
 
         btnRanking1.setBackground(new java.awt.Color(255, 255, 255));
         btnRanking1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -63,7 +85,7 @@ public class MainForm extends javax.swing.JFrame {
                 btnRanking1ActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRanking1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 140, 30));
+        jPanel1.add(btnRanking1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 140, 30));
 
         btnMatches.setBackground(new java.awt.Color(255, 255, 255));
         btnMatches.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -73,7 +95,7 @@ public class MainForm extends javax.swing.JFrame {
                 btnMatchesActionPerformed(evt);
             }
         });
-        jPanel1.add(btnMatches, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 140, 30));
+        jPanel1.add(btnMatches, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 140, 30));
 
         btnExit.setBackground(new java.awt.Color(255, 255, 255));
         btnExit.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -83,9 +105,29 @@ public class MainForm extends javax.swing.JFrame {
                 btnExitActionPerformed(evt);
             }
         });
-        jPanel1.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 140, 30));
+        jPanel1.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 140, 30));
+
+        lblName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblName.setForeground(new java.awt.Color(255, 255, 255));
+        lblName.setText("Nombre");
+        jPanel1.add(lblName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 140, -1));
+
+        txfName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txfName.setToolTipText("");
+        txfName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txfNameActionPerformed(evt);
+            }
+        });
+        txfName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txfNameKeyReleased(evt);
+            }
+        });
+        jPanel1.add(txfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 140, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
+        jLabel2.setText("Nombre");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 400));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -103,9 +145,11 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
+        
         this.setVisible(false);
-        this.gameWindow = new GameForm();
+        this.gameWindow.setFocusable(true);
         this.gameWindow.setVisible(true);
+        this.gameWindow.startGame(-1);
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnRanking1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRanking1ActionPerformed
@@ -115,14 +159,27 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRanking1ActionPerformed
 
     private void btnMatchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchesActionPerformed
-         this.setVisible(false);
-        this.matchesWindow = new MatchesForm(this);
+        this.setVisible(false);
+        this.matchesWindow.loadMatches();
         this.matchesWindow.setVisible(true);
+        
     }//GEN-LAST:event_btnMatchesActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void txfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txfNameActionPerformed
+
+    private void txfNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfNameKeyReleased
+        if(!txfName.getText().equals("")){
+            btnPlay.setEnabled(true);
+        }else{
+            btnPlay.setEnabled(false);
+        }
+    }//GEN-LAST:event_txfNameKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -133,5 +190,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JTextField txfName;
     // End of variables declaration//GEN-END:variables
 }

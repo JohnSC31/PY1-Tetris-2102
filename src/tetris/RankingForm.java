@@ -5,6 +5,11 @@
  */
 package tetris;
 
+import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 /**
  *
  * @author John
@@ -12,10 +17,13 @@ package tetris;
 public class RankingForm extends javax.swing.JFrame {
     
     private MainForm mainWindow;
+    private final String MATCHFILEPATH = "./src/Data/Ranking.txt";
+    private Gson gson = new Gson();
     
     public RankingForm(MainForm mainWindow) {
         initComponents();
         this.mainWindow = mainWindow;
+        mostrarRanking();
     }
 
     /**
@@ -27,11 +35,18 @@ public class RankingForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background = new javax.swing.JLabel();
         titleForm = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
-        background = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txaRanking = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
+        background.setMaximumSize(new java.awt.Dimension(500, 400));
+        background.setMinimumSize(new java.awt.Dimension(500, 400));
+        background.setPreferredSize(new java.awt.Dimension(500, 410));
 
         titleForm.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
         titleForm.setForeground(new java.awt.Color(255, 255, 255));
@@ -44,7 +59,14 @@ public class RankingForm extends javax.swing.JFrame {
             }
         });
 
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/background2.jpg"))); // NOI18N
+        txaRanking.setEditable(false);
+        txaRanking.setBackground(new java.awt.Color(36, 36, 36));
+        txaRanking.setColumns(20);
+        txaRanking.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txaRanking.setForeground(new java.awt.Color(255, 255, 255));
+        txaRanking.setRows(5);
+        txaRanking.setBorder(null);
+        jScrollPane1.setViewportView(txaRanking);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,12 +79,14 @@ public class RankingForm extends javax.swing.JFrame {
                         .addComponent(btnBack))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addComponent(titleForm)))
-                .addContainerGap(333, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titleForm)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(212, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -70,13 +94,15 @@ public class RankingForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(titleForm)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnBack)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -87,11 +113,36 @@ public class RankingForm extends javax.swing.JFrame {
         this.setVisible(false);
         this.mainWindow.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
-
+    
+    ArrayList arrRankings;
+    
+    private void mostrarRanking(){
+        loadRanking();
+        if (arrRankings == null)
+            txaRanking.setText("El ranking está vació");
+        else{
+        txaRanking.setText("");
+        txaRanking.setText("Nombre \tTiempo \tPuntaje");
+        for (int i = 0; i < arrRankings.size(); i++) {
+            txaRanking.setText(txaRanking.getText() + "\n" + (i+1) + ".  " + arrRankings.get(i).toString());
+        }
+        }
+    }
+    
+    public void loadRanking(){
+        String matchesStr = FileManager.readFile(MATCHFILEPATH);
+        if(!matchesStr.equals("")){
+                this.arrRankings = gson.fromJson(matchesStr, new TypeToken<ArrayList<Ranking>>(){}.getType()); // se carga la lista de partidas
+        }
+        
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
     private javax.swing.JButton btnBack;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel titleForm;
+    private javax.swing.JTextArea txaRanking;
     // End of variables declaration//GEN-END:variables
 }
