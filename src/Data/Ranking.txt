@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"nombre":"josa","tiempo":"10:18","score":33},{"nombre":"John","tiempo":"06:24","score":18},{"nombre":"","tiempo":"01:24","score":4},{"nombre":"","tiempo":"01:50","score":4},{"nombre":"","tiempo":"01:11","score":3},{"nombre":"john","tiempo":"00:39","score":1},{"nombre":"john","tiempo":"00:16","score":0},{"nombre":"","tiempo":"00:33","score":0},{"nombre":"josue","tiempo":"00:13","score":0},{"nombre":"josa","tiempo":"00:19","score":0}]
+=======
+[{"nombre":"prueba","tiempo":"07:00","score":33},{"nombre":"josa","tiempo":"10:18","score":33},{"nombre":"johh","tiempo":"05:40","score":23}]
+>>>>>>> development

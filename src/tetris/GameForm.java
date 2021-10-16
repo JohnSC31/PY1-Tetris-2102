@@ -57,6 +57,7 @@ public class GameForm extends javax.swing.JFrame{
             this.match = new Match(mainWindow.getPlayer());
         }else{
             this.match = MatchList.getMatch(indexMatch);
+            mainWindow.setPlayer(MatchList.getMatch(indexMatch).getPlayer());
         }
         this.game = new ThreadGame(this, pnlBoard, lblTimer, lblScore, lblLines, lblLevel, pnlNext1, pnlNext2, match);
         this.game.start(); 
@@ -67,7 +68,7 @@ public class GameForm extends javax.swing.JFrame{
         JOptionPane.showMessageDialog(null, "Game Over \n Puntaje: " + game.board.getScore());
         agregarARanking();
         MatchList.deleteMatch(match.getMatchIndex());
-
+        this.mainWindow.setPlayer("");
         this.setVisible(false);
         this.mainWindow.setFocusable(true);
         this.mainWindow.setVisible(true);
@@ -258,6 +259,7 @@ public class GameForm extends javax.swing.JFrame{
         this.game.getMusicPlayer().getClip().close();
         MatchList.saveMatch(this.match);
         this.setVisible(false);
+        this.mainWindow.setPlayer("");
         this.mainWindow.setFocusable(true);
         this.mainWindow.setVisible(true);
     }//GEN-LAST:event_btnSaveActionPerformed
